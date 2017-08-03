@@ -1,0 +1,140 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/enroll_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="@string/enroll_title"
+        android:textSize="30sp"
+        app:font="custom1" />
+
+
+    <LinearLayout
+        android:id="@+id/time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/enroll_title"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/touch_highlight_selector"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text=" 오후 12 : 07 "
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/week_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="120dp">
+
+        <CheckBox
+            android:id="@+id/check_mon_enroll"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_monday_selector"
+            android:button="@null"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/check_tues_enroll"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_tuesday_selector"
+            android:button="@null"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/check_wednes_enroll"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_wednesday_selector"
+            android:button="@null"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/check_thurs_enroll"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_thursday_selector"
+            android:button="@null"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/check_fri_enroll"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_friday_selector"
+            android:button="@null"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/check_sat_enroll"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_satday_selector"
+            android:button="@null"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/check_sun_enroll"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_sunday_selector"
+            android:button="@null"
+            android:checked="true" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/enroll_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/week_layout"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:background="@color/white"
+        android:scaleType="centerInside"
+        android:clickable="true"
+        android:src="@drawable/ic_alarm_enroll_cloud" />
+
+
+</RelativeLayout>

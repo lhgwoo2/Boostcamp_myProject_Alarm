@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SentiAlarm</string>
+    <string name="loading_name">센치한 아침</string>
+    <string name="enroll_title">언제 일어날 건가요?</string>
+    <string name="alarm_dialog_title">알람시간을 선택하세요</string>
+    <string name="am_time">오전</string>
+    <string name="pm_time">오후</string>
+
+
+</resources>

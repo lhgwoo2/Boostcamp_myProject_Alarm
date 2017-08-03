@@ -1,12 +1,17 @@
-package com.boostcamp.sentialarm.VO;
+package com.boostcamp.sentialarm.DTO;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by 현기 on 2017-07-31.
  */
 
-public class AlarmVO extends RealmObject{
+public class AlarmDTO extends RealmObject {
+
+    @PrimaryKey
+    private long id;
+
     private String alarmtime;
 
     private boolean monday;
@@ -18,6 +23,14 @@ public class AlarmVO extends RealmObject{
     private boolean sunday;
 
     private boolean alarmOnOff;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getAlarmtime() {
         return alarmtime;

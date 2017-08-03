@@ -13,10 +13,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boostcamp.sentialarm.DTO.AlarmDTO;
 import com.boostcamp.sentialarm.R;
-import com.boostcamp.sentialarm.VO.AlarmVO;
-
-import java.util.List;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
@@ -26,20 +24,20 @@ import io.realm.RealmRecyclerViewAdapter;
  * Created by 현기 on 2017-07-31.
  */
 
-public class AlarmListAdapter extends RealmRecyclerViewAdapter<AlarmVO, AlarmListAdapter.AlarmListViewHoler> {
+public class AlarmListAdapter extends RealmRecyclerViewAdapter<AlarmDTO, AlarmListAdapter.AlarmListViewHoler> {
 
-    //private List<AlarmVO> alarmArray;
+
     private Context context;
-    AlarmVO alarmVO;
-    Realm realm;
+    AlarmDTO alarmDTO;
 
 
-    public AlarmListAdapter(OrderedRealmCollection<AlarmVO> data, Context context)  {
+    public AlarmListAdapter(OrderedRealmCollection<AlarmDTO> data, Context context)  {
         super(data, true);
         setHasStableIds(true);
         this.context = context;
 
     }
+
 
     @Override
     public AlarmListViewHoler onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,28 +47,29 @@ public class AlarmListAdapter extends RealmRecyclerViewAdapter<AlarmVO, AlarmLis
     @Override
     public void onBindViewHolder(final AlarmListViewHoler holder, int position) {
 
-        alarmVO = getItem(position);
+        alarmDTO = getItem(position);
 
-        holder.alarmVO = alarmVO;
+        holder.alarmDTO = alarmDTO;
 
-        holder.onOffSwitch.setChecked(alarmVO.isAlarmOnOff());
+        holder.onOffSwitch.setChecked(alarmDTO.isAlarmOnOff());
 
-        holder.monCheck.setChecked(alarmVO.isMonday());
-        holder.tuesCheck.setChecked(alarmVO.isTuesday());
-        holder.wednesCheck.setChecked(alarmVO.isWednesday());
-        holder.thurCheck.setChecked(alarmVO.isThursday());
-        holder.friCheck.setChecked(alarmVO.isFriday());
-        holder.satCheck.setChecked(alarmVO.isSaturday());
-        holder.sunCheck.setChecked(alarmVO.isSunday());
+        holder.monCheck.setChecked(alarmDTO.isMonday());
+        holder.tuesCheck.setChecked(alarmDTO.isTuesday());
+        holder.wednesCheck.setChecked(alarmDTO.isWednesday());
+        holder.thurCheck.setChecked(alarmDTO.isThursday());
+        holder.friCheck.setChecked(alarmDTO.isFriday());
+        holder.satCheck.setChecked(alarmDTO.isSaturday());
+        holder.sunCheck.setChecked(alarmDTO.isSunday());
 
-        holder.timeView.setText(alarmVO.getAlarmtime());
+        holder.timeView.setText(alarmDTO.getAlarmtime());
 
-        holder.alarmCardView.setOnLongClickListener(longClickCardView());
+        holder.alarmCardView.setOnLongClickListener(longClickCardView(alarmDTO.getId(), position));
+
 
     }
 
     // 뷰 길게 클릭 - 삭제 다이얼로그 띄우기
-    public View.OnLongClickListener longClickCardView(){
+    public View.OnLongClickListener longClickCardView(final long id, final int position){
 
         return new View.OnLongClickListener() {
             @Override
@@ -81,6 +80,8 @@ public class AlarmListAdapter extends RealmRecyclerViewAdapter<AlarmVO, AlarmLis
                 builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteAlarmData(id);
+                        notifyItemChanged(position);
                         Toast.makeText(context.getApplicationContext(), "알람을 지웠습니다^^", Toast.LENGTH_LONG).show();
 
                     }
@@ -97,25 +98,22 @@ public class AlarmListAdapter extends RealmRecyclerViewAdapter<AlarmVO, AlarmLis
             }
         };
     }
-    public void deleteAlarmData(){
-        real
-        alarmVO.deleteFromRealm();
+
+    // 램 데이터베이스에서 삭제
+    private void deleteAlarmData(long id){
+
+        Realm instance = Realm.getDefaultInstance();
+        AlarmDTO alarmDTO = instance.where(AlarmDTO.class).equalTo("id", id).findFirst();
+        if (alarmDTO != null) {
+            instance.beginTransaction();
+            alarmDTO.deleteFromRealm();
+            instance.commitTransaction();
+        }
+        instance.close();
 
     }
 
 
-
-    public void setAlarmListData(List<AlarmVO> alarmArray){
-
-
-        //this.alarmArray = alarmArray;
-    }
-
-
-/* @Override
-    public int getItemCount() {
-        return alarmArray.size();
-    }*/
 
     public class AlarmListViewHoler extends RecyclerView.ViewHolder{
 
@@ -134,7 +132,7 @@ public class AlarmListAdapter extends RealmRecyclerViewAdapter<AlarmVO, AlarmLis
         public Switch onOffSwitch;
 
 
-        public AlarmVO alarmVO;
+        public AlarmDTO alarmDTO;
 
         public AlarmListViewHoler(View itemView) {
             super(itemView);

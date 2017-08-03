@@ -17,9 +17,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.boostcamp.sentialarm.DTO.AlarmDTO;
 import com.boostcamp.sentialarm.MainActivity;
 import com.boostcamp.sentialarm.R;
-import com.boostcamp.sentialarm.VO.AlarmVO;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
 import com.wx.wheelview.widget.WheelView;
 
@@ -126,19 +126,25 @@ public class EnrollFragment extends Fragment {
     private void setInputAlarm(){
 
         realm.beginTransaction();
-        AlarmVO alarmVO = realm.createObject(AlarmVO.class); // 새 객체 만들기
-        alarmVO.setAlarmtime(textViewtime.getText().toString());
-        alarmVO.setAlarmOnOff(true);        //알람 디폴트 ON
-        alarmVO.setMonday(checkMonEnroll.isChecked());
-        alarmVO.setTuesday(checkTuesEnroll.isChecked());
-        alarmVO.setWednesday(checkWednesEnroll.isChecked());
-        alarmVO.setThursday(checkThursEnroll.isChecked());
-        alarmVO.setFriday(checkFriEnroll.isChecked());
-        alarmVO.setSaturday(checkSatEnroll.isChecked());
-        alarmVO.setSunday(checkSunEnroll.isChecked());
+
+        Number maxId  = realm.where(AlarmDTO.class).max("id");
+        int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
+        AlarmDTO alarmDTO = realm.createObject(AlarmDTO.class, nextId);
+
+
+        // AlarmDTO alarmDTO = realm.createObject(AlarmDTO.class); // 새 객체 만들기
+        alarmDTO.setAlarmtime(textViewtime.getText().toString());
+        alarmDTO.setAlarmOnOff(true);        //알람 디폴트 ON
+        alarmDTO.setMonday(checkMonEnroll.isChecked());
+        alarmDTO.setTuesday(checkTuesEnroll.isChecked());
+        alarmDTO.setWednesday(checkWednesEnroll.isChecked());
+        alarmDTO.setThursday(checkThursEnroll.isChecked());
+        alarmDTO.setFriday(checkFriEnroll.isChecked());
+        alarmDTO.setSaturday(checkSatEnroll.isChecked());
+        alarmDTO.setSunday(checkSunEnroll.isChecked());
         realm.commitTransaction();
 
-        Log.i("디비 등록","디비알람시간: "+alarmVO.getAlarmtime());
+        Log.i("디비 등록","디비알람시간: "+ alarmDTO.getAlarmtime());
     }
 
     //현재시간 초기 설정

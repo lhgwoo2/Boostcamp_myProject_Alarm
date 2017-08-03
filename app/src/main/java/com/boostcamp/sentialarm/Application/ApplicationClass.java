@@ -15,8 +15,11 @@ public class ApplicationClass extends Application {
     public void onCreate() {
         super.onCreate();
 
+
         //realm DB 초기화
         Realm.init(this);
+
+        //Realm.deleteRealm(Realm.getDefaultConfiguration());
 
         //폰트
         Typekit.getInstance()

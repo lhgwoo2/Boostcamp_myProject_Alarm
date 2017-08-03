@@ -5,18 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.sentialarm.Adapter.AlarmListAdapter;
+import com.boostcamp.sentialarm.DTO.AlarmDTO;
 import com.boostcamp.sentialarm.MainActivity;
 import com.boostcamp.sentialarm.R;
-import com.boostcamp.sentialarm.VO.AlarmVO;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -49,61 +45,17 @@ public class AlarmListFragment extends Fragment {
         realm = ((MainActivity)getActivity()).realm;
 
         AlarmListAdapter alarmListAdapter = new AlarmListAdapter(setData(),this.getContext());
-        //alarmListAdapter.setAlarmListData();
         alarmlistRecyclerView.setAdapter(alarmListAdapter);
 
 
         return view;
     }
 
-    private RealmResults<AlarmVO> setData(){
-        RealmResults<AlarmVO> alarms = realm.where(AlarmVO.class)
+    private RealmResults<AlarmDTO> setData(){
+        RealmResults<AlarmDTO> alarms = realm.where(AlarmDTO.class)
                 .findAll();
 
-        Log.i("알람데이터","디비에서가져온 알람시간 : "+ alarms.get(0).getAlarmtime());
         return alarms;
     }
-
-    public List<AlarmVO> testSetVO(){
-        List<AlarmVO> list = new ArrayList<>();
-
-        AlarmVO vo = new AlarmVO();
-        vo.setAlarmOnOff(true);
-        vo.setAlarmtime("오전 12시 12분");
-        vo.setFriday(false);
-        vo.setMonday(false);
-        vo.setSaturday(true);
-        vo.setSunday(true);
-        vo.setThursday(false);
-        vo.setTuesday(true);
-        vo.setWednesday(true);
-
-        list.add(vo);
-
-
-        vo = new AlarmVO();
-        vo.setAlarmOnOff(true);
-        vo.setAlarmtime("오후 1시 30분");
-        vo.setFriday(false);
-        vo.setMonday(true);
-        vo.setSaturday(true);
-        vo.setSunday(true);
-        vo.setThursday(false);
-        vo.setTuesday(true);
-        vo.setWednesday(true);
-
-        list.add(vo);
-
-
-
-        return list;
-    }
-
-
-
-
-
-
-
 
 }

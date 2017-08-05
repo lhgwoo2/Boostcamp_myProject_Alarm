@@ -1,5 +1,8 @@
-# Daily Project working
+# Project working
 
+### 설계사항
+* [기능명세서_GoogleDocs](https://docs.google.com/spreadsheets/d/1grs9lrhq8CYRSI8bHxooGQWIaX9tMeAWCQgiyZFT-v0/edit#gid=0)
+* [화면설계서_kakaoOven](https://ovenapp.io/project/uczL2XKQTPunqFiIMmWA6EyGVenMsNC7#ZaU4t)
 
 ### 프로젝트 1주차
 1. [2017.8.3 목 작업](./2017.8.3.md)

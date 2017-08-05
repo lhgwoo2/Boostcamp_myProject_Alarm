@@ -10,7 +10,9 @@
 
 * 알람매니저, 스케줄러
 * Realm
-* 사운드 클라우드 API
+* ~~사운드 클라우드 API~~ -> Jamendo API로 변경
 * 공공 날씨 API
 * firebase
+
+### [Daily Project working 으로 이동](./daily_porject_contents/dailyprojectworking.md) 
 

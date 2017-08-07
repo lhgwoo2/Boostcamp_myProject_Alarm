@@ -53,7 +53,8 @@ public class AlarmListFragment extends Fragment {
 
     private RealmResults<AlarmDTO> setData(){
         RealmResults<AlarmDTO> alarms = realm.where(AlarmDTO.class)
-                .findAll();
+                .findAllSorted("id");
+
 
         return alarms;
     }

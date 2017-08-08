@@ -3,7 +3,7 @@ package com.boostcamp.sentialarm;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
-import com.boostcamp.sentialarm.Adapter.MainFragmentAdapter;
+import com.boostcamp.sentialarm.Util.BaseAtivity.BaseActivity;
 
 import io.realm.Realm;
 

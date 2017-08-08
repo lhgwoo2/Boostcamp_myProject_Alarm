@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.Adapter;
+package com.boostcamp.sentialarm;
 
 
 import android.support.v4.app.Fragment;

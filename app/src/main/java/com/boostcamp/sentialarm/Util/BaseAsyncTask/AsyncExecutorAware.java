@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.BaseAsyncTask;
+package com.boostcamp.sentialarm.Util.BaseAsyncTask;
 
 /**
  * Created by 현기 on 2017-08-05.

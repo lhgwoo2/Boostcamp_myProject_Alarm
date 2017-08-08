@@ -17,7 +17,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.boostcamp.sentialarm.DTO.AlarmDTO;
+import com.boostcamp.sentialarm.Alarm.AlarmDAO;
+import com.boostcamp.sentialarm.Alarm.AlarmDTO;
+import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
 import com.boostcamp.sentialarm.MainActivity;
 import com.boostcamp.sentialarm.R;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
@@ -26,8 +28,6 @@ import com.wx.wheelview.widget.WheelView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import io.realm.Realm;
 
 public class EnrollFragment extends Fragment {
 
@@ -50,7 +50,7 @@ public class EnrollFragment extends Fragment {
 
     Animation ani;
 
-    Realm realm;
+    AlarmDAO alarmDAO;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,13 +63,18 @@ public class EnrollFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.enroll_fragment, container, false);
 
-        init(view);
+        alarmDAO = new AlarmDAO();
+        alarmDAO.creatAlarmRealm();
 
+        initView(view);
+        selectTimeAreaSetting(view);
+        initTime();
+        setEnrollButton();
 
         return view;
     }
 
-    private void init(View view) {
+    private void initView(View view) {
         textViewtime = (TextView) view.findViewById(R.id.tv_time);
 
         checkMonEnroll = (CheckBox) view.findViewById(R.id.check_mon_enroll);
@@ -81,19 +86,7 @@ public class EnrollFragment extends Fragment {
         checkSunEnroll = (CheckBox) view.findViewById(R.id.check_sun_enroll);
 
         enrollButton = (ImageButton) view.findViewById(R.id.enroll_button);
-
-
-        realm = ((MainActivity)getActivity()).realm;
-
-        selectTimeArea(view);
-        initTime();
-        setEnrollButton();
-
-
-
     }
-
-
 
 
     private void setEnrollButton(){
@@ -111,7 +104,18 @@ public class EnrollFragment extends Fragment {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         Log.i("등록애니","애니작동");
-                        setInputAlarm();
+
+
+                        String time = textViewtime.getText().toString();
+                        String[] times = time.split(":");
+                        // 알람 저장
+                        AlarmDTO alarmDTO = alarmDAO.setEnrollAlarm(Integer.valueOf(times[0].trim()), Integer.valueOf(times[1].trim()),true,
+                                checkMonEnroll.isChecked(),checkTuesEnroll.isChecked(),checkWednesEnroll.isChecked(),
+                                checkThursEnroll.isChecked(),checkFriEnroll.isChecked(),checkSatEnroll.isChecked(),checkSunEnroll.isChecked());
+
+                        // 알람 등록
+                        AlarmScheduler.registerAlarm(getContext().getApplicationContext(),alarmDTO.getId(),alarmDTO.getAlarmHour(),alarmDTO.getAlarmMinute());
+
 
                         ((MainActivity)getActivity()).getViewPager().setCurrentItem(1);
                     }
@@ -122,35 +126,10 @@ public class EnrollFragment extends Fragment {
         });
     }
 
-    //알람 저장 - 램
-    private void setInputAlarm(){
-
-        realm.beginTransaction();
-
-        Number maxId  = realm.where(AlarmDTO.class).max("id");
-        int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
-        AlarmDTO alarmDTO = realm.createObject(AlarmDTO.class, nextId);
-
-
-        // AlarmDTO alarmDTO = realm.createObject(AlarmDTO.class); // 새 객체 만들기
-        alarmDTO.setAlarmtime(textViewtime.getText().toString());
-        alarmDTO.setAlarmOnOff(true);        //알람 디폴트 ON
-        alarmDTO.setMonday(checkMonEnroll.isChecked());
-        alarmDTO.setTuesday(checkTuesEnroll.isChecked());
-        alarmDTO.setWednesday(checkWednesEnroll.isChecked());
-        alarmDTO.setThursday(checkThursEnroll.isChecked());
-        alarmDTO.setFriday(checkFriEnroll.isChecked());
-        alarmDTO.setSaturday(checkSatEnroll.isChecked());
-        alarmDTO.setSunday(checkSunEnroll.isChecked());
-        realm.commitTransaction();
-
-        Log.i("디비 등록","디비알람시간: "+ alarmDTO.getAlarmtime());
-    }
-
     //현재시간 초기 설정
     private void initTime() {
         Date nowDate = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("a h : mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH : mm");
         String nowTime = formatter.format(nowDate);
 
         textViewtime.setText(" " + nowTime + " ");
@@ -158,7 +137,7 @@ public class EnrollFragment extends Fragment {
 
 
     //시간 영역 선택시 다이얼로그 띄우기
-    private void selectTimeArea(View view) {
+    private void selectTimeAreaSetting(View view) {
 
         LinearLayout timeSelectLinearLayout = (LinearLayout) view.findViewById(R.id.time_layout);
 
@@ -210,18 +189,11 @@ public class EnrollFragment extends Fragment {
 
     // 다이얼로그 시간 확정하기
     private void getTimeWheelview() {
-        int timeHourValue = Integer.valueOf(hourWheelView.getSelectionItem().toString());
+        String timeHourValue = hourWheelView.getSelectionItem().toString();
         String timeMinuteValue = minuteWheelView.getSelectionItem().toString();
 
-        String timeString = null;
-        if (timeHourValue >= 12) {
-            if (timeHourValue != 12) {
-                timeHourValue = timeHourValue - 12;
-            }
-            timeString = " " + getString(R.string.pm_time) + " " + timeHourValue + " : " + timeMinuteValue + " ";
-        } else {
-            timeString = " " + getString(R.string.am_time) + " " + timeHourValue + " : " + timeMinuteValue + " ";
-        }
+        String timeString = timeHourValue +" : "+timeMinuteValue;
+
         textViewtime.setText(timeString);
     }
 
@@ -272,5 +244,12 @@ public class EnrollFragment extends Fragment {
             }
         }
         return list;
+    }
+
+    @Override
+    public void onDestroy() {
+        //realm 해제
+        alarmDAO.closeAlarmRealm();
+        super.onDestroy();
     }
 }

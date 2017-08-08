@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm;
+package com.boostcamp.sentialarm.Alarm;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -8,11 +8,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.boostcamp.sentialarm.API.FireBase.DTO.MusicInfoDTO;
+import com.boostcamp.sentialarm.API.MediaPlayer.MusicInfoDTO;
 import com.boostcamp.sentialarm.API.Jamendo.DTO.MusicDTO;
-import com.boostcamp.sentialarm.API.MediaPlayerAPI.MusicPlayer;
-import com.boostcamp.sentialarm.BaseAsyncTask.AsyncCallback;
-import com.boostcamp.sentialarm.BaseAsyncTask.AsyncExecutor;
+import com.boostcamp.sentialarm.API.MediaPlayer.MusicPlayer;
+import com.boostcamp.sentialarm.R;
+import com.boostcamp.sentialarm.Util.BaseAsyncTask.AsyncCallback;
+import com.boostcamp.sentialarm.Util.BaseAsyncTask.AsyncExecutor;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -32,6 +33,7 @@ public class AlarmPopActivity extends AppCompatActivity {
     private int musicCount = 0;
     private List<MusicInfoDTO> playList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,7 @@ public class AlarmPopActivity extends AppCompatActivity {
 
 
         // MediaPlayer 객체 생성 - 싱글톤
-        loadMediaPlayer();
+        musicPlayer = (MusicPlayer) MusicPlayer.getMusicPlayerIns();
         playList = testDATA();
         Collections.shuffle(playList);
 
@@ -56,9 +58,7 @@ public class AlarmPopActivity extends AppCompatActivity {
     public void MusicProcess(int musicCount) {
 
         //jamendoAPI url 매칭
-        String jamendoURL = addURL(musicCount);
-
-        // 비동기적 실행 - JamendoAPI에서 곡 정보를 가져오고, 가져온 음원URL로 미디어플레이어를 실행한다.
+        String jamendoURL = musicPlayer.addURL(musicCount);
         loadMusicURL(jamendoURL);
     }
 
@@ -151,9 +151,6 @@ public class AlarmPopActivity extends AppCompatActivity {
         }
     };
 
-    public void loadMediaPlayer() {
-        musicPlayer = (MusicPlayer) MusicPlayer.getMusicPlayerIns();
-    }
 
     @Override
     protected void onDestroy() {

@@ -1,9 +1,10 @@
-package com.boostcamp.sentialarm;
+package com.boostcamp.sentialarm.Util.BaseAtivity;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.boostcamp.sentialarm.R;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {

@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".Application.ApplicationClass"
+        android:name=".Util.Application.ApplicationClass"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"/>
         <activity android:name=".LoadingActivity"
@@ -24,10 +24,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AlarmPopActivity"></activity>
+        <activity android:name=".Alarm.AlarmPopActivity"></activity>
 
-        <receiver android:name=".Receiver.AlarmReceiver" />
-        <receiver android:name=".Receiver.BootLoadReceiver"/>
+        <receiver android:name=".Alarm.AlarmReceiver" />
+        <receiver android:name=".Alarm.BootLoadAlarmReceiver"/>
     </application>
 
 </manifest>

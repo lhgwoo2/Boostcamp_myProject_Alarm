@@ -9,13 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.boostcamp.sentialarm.Adapter.AlarmListAdapter;
-import com.boostcamp.sentialarm.DTO.AlarmDTO;
-import com.boostcamp.sentialarm.MainActivity;
+import com.boostcamp.sentialarm.Alarm.AlarmDAO;
+import com.boostcamp.sentialarm.Alarm.AlarmListAdapter;
 import com.boostcamp.sentialarm.R;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by 현기 on 2017-07-26.
@@ -26,7 +22,7 @@ public class AlarmListFragment extends Fragment {
     private RecyclerView alarmlistRecyclerView;
     private LinearLayoutManager linearLayoutManager;
 
-    private Realm realm;
+    private AlarmDAO alarmDAO;
 
     @Nullable
     @Override
@@ -42,21 +38,14 @@ public class AlarmListFragment extends Fragment {
         alarmlistRecyclerView.setHasFixedSize(true);
         alarmlistRecyclerView.setLayoutManager(linearLayoutManager);
 
-        realm = ((MainActivity)getActivity()).realm;
+        alarmDAO = new AlarmDAO();
+        alarmDAO.creatAlarmRealm();
 
-        AlarmListAdapter alarmListAdapter = new AlarmListAdapter(setData(),this.getContext());
+        AlarmListAdapter alarmListAdapter = new AlarmListAdapter(alarmDAO.getAllAlarm(),this.getContext());
         alarmlistRecyclerView.setAdapter(alarmListAdapter);
 
 
         return view;
-    }
-
-    private RealmResults<AlarmDTO> setData(){
-        RealmResults<AlarmDTO> alarms = realm.where(AlarmDTO.class)
-                .findAllSorted("id");
-
-
-        return alarms;
     }
 
 }

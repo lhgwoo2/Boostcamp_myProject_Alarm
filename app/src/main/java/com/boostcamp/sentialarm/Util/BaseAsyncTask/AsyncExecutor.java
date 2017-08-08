@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.BaseAsyncTask;
+package com.boostcamp.sentialarm.Util.BaseAsyncTask;
 
 import android.os.AsyncTask;
 import android.util.Log;

@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.Adapter;
+package com.boostcamp.sentialarm.Alarm;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +13,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.boostcamp.sentialarm.DTO.AlarmDTO;
 import com.boostcamp.sentialarm.R;
 
 import io.realm.OrderedRealmCollection;
@@ -61,7 +60,7 @@ public class AlarmListAdapter extends RealmRecyclerViewAdapter<AlarmDTO, AlarmLi
         holder.satCheck.setChecked(alarmDTO.isSaturday());
         holder.sunCheck.setChecked(alarmDTO.isSunday());
 
-        holder.timeView.setText(alarmDTO.getAlarmtime());
+        holder.timeView.setText(alarmDTO.getAlarmHour()+" : "+alarmDTO.getAlarmMinute());
 
         holder.alarmCardView.setOnLongClickListener(longClickCardView(alarmDTO.getId(), position));
 

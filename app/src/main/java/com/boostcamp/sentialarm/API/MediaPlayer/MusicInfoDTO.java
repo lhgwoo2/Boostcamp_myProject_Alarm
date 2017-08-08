@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.API.FireBase.DTO;
+package com.boostcamp.sentialarm.API.MediaPlayer;
 
 /**
  * Created by 현기 on 2017-08-06.

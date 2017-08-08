@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.DTO;
+package com.boostcamp.sentialarm.Alarm;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -10,9 +10,10 @@ import io.realm.annotations.PrimaryKey;
 public class AlarmDTO extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private int id;
 
-    private String alarmtime;
+    private int alarmHour;
+    private int alarmMinute;
 
     private boolean monday;
     private boolean tuesday;
@@ -24,20 +25,28 @@ public class AlarmDTO extends RealmObject {
 
     private boolean alarmOnOff;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getAlarmtime() {
-        return alarmtime;
+    public int getAlarmHour() {
+        return alarmHour;
     }
 
-    public void setAlarmtime(String alarmtime) {
-        this.alarmtime = alarmtime;
+    public void setAlarmHour(int alarmHour) {
+        this.alarmHour = alarmHour;
+    }
+
+    public int getAlarmMinute() {
+        return alarmMinute;
+    }
+
+    public void setAlarmMinute(int alarmMinute) {
+        this.alarmMinute = alarmMinute;
     }
 
     public boolean isMonday() {
@@ -103,6 +112,4 @@ public class AlarmDTO extends RealmObject {
     public void setAlarmOnOff(boolean alarmOnOff) {
         this.alarmOnOff = alarmOnOff;
     }
-
-
 }

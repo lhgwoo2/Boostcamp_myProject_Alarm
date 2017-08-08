@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.Application;
+package com.boostcamp.sentialarm.Util.Application;
 
 import android.app.Application;
 

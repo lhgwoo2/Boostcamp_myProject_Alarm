@@ -2,9 +2,10 @@ package com.boostcamp.sentialarm;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
+
+import com.boostcamp.sentialarm.Util.BaseAtivity.BaseActivity;
 
 public class LoadingActivity extends BaseActivity {
     int SPLASH_TIME = 2000;

@@ -16,10 +16,12 @@ public class AlarmManagerUtil {
     public static AlarmManager alarmManager;
 
 
-    public static void getAlarmManager(Context context){
+    public static AlarmManager getAlarmManager(Context context){
         if(alarmManager == null){
             alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         }
+
+        return alarmManager;
     }
 
     //알람 등록

@@ -1,8 +1,7 @@
 package com.boostcamp.sentialarm.fragment;
 
-import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -22,17 +20,12 @@ import com.boostcamp.sentialarm.Alarm.AlarmDTO;
 import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
 import com.boostcamp.sentialarm.MainActivity;
 import com.boostcamp.sentialarm.R;
-import com.wx.wheelview.adapter.ArrayWheelAdapter;
-import com.wx.wheelview.widget.WheelView;
+import com.boostcamp.sentialarm.Util.Application.ApplicationClass;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
-public class EnrollFragment extends Fragment {
-
-    WheelView hourWheelView;
-    WheelView minuteWheelView;
+public class EnrollFragment extends Fragment implements WheelViewDialogFragment.WheelViewDialogListener {
 
     TextView textViewtime;
 
@@ -57,18 +50,17 @@ public class EnrollFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        Log.i("tests", "EnrollFragment!");
         View view = inflater.inflate(R.layout.enroll_fragment, container, false);
 
         alarmDAO = new AlarmDAO();
-        alarmDAO.creatAlarmRealm();
+        alarmDAO.creatAlarmRealm(ApplicationClass.alarmListConfig);
 
         initView(view);
-        selectTimeAreaSetting(view);
         initTime();
+        selectTimeAreaSetting(view);
         setEnrollButton();
 
         return view;
@@ -86,6 +78,8 @@ public class EnrollFragment extends Fragment {
         checkSunEnroll = (CheckBox) view.findViewById(R.id.check_sun_enroll);
 
         enrollButton = (ImageButton) view.findViewById(R.id.enroll_button);
+
+
     }
 
 
@@ -113,8 +107,12 @@ public class EnrollFragment extends Fragment {
                                 checkMonEnroll.isChecked(),checkTuesEnroll.isChecked(),checkWednesEnroll.isChecked(),
                                 checkThursEnroll.isChecked(),checkFriEnroll.isChecked(),checkSatEnroll.isChecked(),checkSunEnroll.isChecked());
 
+                        // 리스트 데이터 변경
+                        ((AlarmListFragment)getFragmentManager().getFragments().get(1)).alarmListAdapter.notifyDataSetChanged();
+
                         // 알람 등록
                         AlarmScheduler.registerAlarm(getContext().getApplicationContext(),alarmDTO.getId(),alarmDTO.getAlarmHour(),alarmDTO.getAlarmMinute());
+
 
 
                         ((MainActivity)getActivity()).getViewPager().setCurrentItem(1);
@@ -135,6 +133,12 @@ public class EnrollFragment extends Fragment {
         textViewtime.setText(" " + nowTime + " ");
     }
 
+    @Override
+    public void onDialogPositiveClick(String sHour, String sMinute) {
+        String timeString = sHour +" : "+sMinute;
+        textViewtime.setText(timeString);
+        Log.i("휠뷰 시간",timeString);
+    }
 
     //시간 영역 선택시 다이얼로그 띄우기
     private void selectTimeAreaSetting(View view) {
@@ -150,7 +154,8 @@ public class EnrollFragment extends Fragment {
                         break;
                     case MotionEvent.ACTION_CANCEL:
                     case MotionEvent.ACTION_UP:
-                        showDialog();
+
+                        showWheelDialog();
                         break;
                     default:
                         break;
@@ -163,88 +168,12 @@ public class EnrollFragment extends Fragment {
     }
 
 
-    // 알람 시간 선택 다이얼로그
-    private void showDialog() {
-        LayoutInflater dialog = LayoutInflater.from(getContext());
-        final View dialogLayout = dialog.inflate(R.layout.timepick_dialog, null);
-        final Dialog myDialog = new Dialog(getContext());
-
-        initWheel(dialogLayout);
-
-        myDialog.setTitle(R.string.alarm_dialog_title);
-        myDialog.setContentView(dialogLayout);
-        myDialog.show();
-
-        Button button_time_dialog_ok = (Button) dialogLayout.findViewById(R.id.button_time_dialog_ok);
-
-        button_time_dialog_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getTimeWheelview();
-                myDialog.cancel();
-            }
-        });
-
+    public void showWheelDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new WheelViewDialogFragment();
+        dialog.show(getActivity().getSupportFragmentManager(), "WheelViewDialogFragment");
     }
 
-    // 다이얼로그 시간 확정하기
-    private void getTimeWheelview() {
-        String timeHourValue = hourWheelView.getSelectionItem().toString();
-        String timeMinuteValue = minuteWheelView.getSelectionItem().toString();
-
-        String timeString = timeHourValue +" : "+timeMinuteValue;
-
-        textViewtime.setText(timeString);
-    }
-
-
-    private void initWheel(View view) {
-
-        hourWheelView = (WheelView) view.findViewById(R.id.hour_wheelview);
-        hourWheelView.setWheelAdapter(new ArrayWheelAdapter(getContext()));
-        hourWheelView.setSkin(WheelView.Skin.Holo);
-        hourWheelView.setWheelData(createHours());
-        WheelView.WheelViewStyle style = new WheelView.WheelViewStyle();
-        style.selectedTextColor = Color.parseColor("#0288ce");
-        style.textColor = Color.GRAY;
-        style.selectedTextSize = 20;
-        hourWheelView.setStyle(style);
-        hourWheelView.setExtraText("시", Color.parseColor("#0288ce"), 40, 70);
-
-        minuteWheelView = (WheelView) view.findViewById(R.id.minute_wheelview);
-        minuteWheelView.setWheelAdapter(new ArrayWheelAdapter(getContext()));
-        minuteWheelView.setSkin(WheelView.Skin.Holo);
-        minuteWheelView.setWheelData(createMinutes());
-        minuteWheelView.setStyle(style);
-        minuteWheelView.setExtraText("분", Color.parseColor("#0288ce"), 40, 70);
-
-    }
-
-    // 알람시간 선택 - 시간 휠뷰
-    private ArrayList<String> createHours() {
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < 24; i++) {
-            if (i < 10) {
-                list.add("0" + i);
-            } else {
-                list.add("" + i);
-            }
-        }
-        return list;
-    }
-
-    // 알람시간 선택 - 분 휠뷰
-    private ArrayList<String> createMinutes() {
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < 60; i += 5) {
-            if (i < 10) {
-                list.add("0" + i);
-            } else {
-                list.add("" + i);
-            }
-        }
-        return list;
-    }
 
     @Override
     public void onDestroy() {

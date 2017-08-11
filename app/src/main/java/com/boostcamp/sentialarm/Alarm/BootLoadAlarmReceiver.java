@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.boostcamp.sentialarm.Util.Application.ApplicationClass;
+
 import io.realm.RealmResults;
 
 /**
@@ -25,7 +27,7 @@ public class BootLoadAlarmReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 
             alarmDAO = new AlarmDAO();
-            alarmDAO.creatAlarmRealm();
+            alarmDAO.creatAlarmRealm(ApplicationClass.alarmListConfig);
 
             RealmResults<AlarmDTO> alarms = alarmDAO.getAllAlarm();
             for(int i=0; i < alarms.size();i++){

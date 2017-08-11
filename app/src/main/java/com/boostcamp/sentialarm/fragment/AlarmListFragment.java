@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.sentialarm.Alarm.AlarmDAO;
-import com.boostcamp.sentialarm.Alarm.AlarmListAdapter;
 import com.boostcamp.sentialarm.R;
+import com.boostcamp.sentialarm.Util.Application.ApplicationClass;
 
 /**
  * Created by 현기 on 2017-07-26.
@@ -22,6 +22,7 @@ public class AlarmListFragment extends Fragment {
     private RecyclerView alarmlistRecyclerView;
     private LinearLayoutManager linearLayoutManager;
 
+    public AlarmListAdapters alarmListAdapter;
     private AlarmDAO alarmDAO;
 
     @Nullable
@@ -39,11 +40,13 @@ public class AlarmListFragment extends Fragment {
         alarmlistRecyclerView.setLayoutManager(linearLayoutManager);
 
         alarmDAO = new AlarmDAO();
-        alarmDAO.creatAlarmRealm();
+        alarmDAO.creatAlarmRealm(ApplicationClass.alarmListConfig);
 
-        AlarmListAdapter alarmListAdapter = new AlarmListAdapter(alarmDAO.getAllAlarm(),this.getContext());
+
+        alarmListAdapter = new AlarmListAdapters();
+        alarmListAdapter.setList(alarmDAO.getAllAlarm(), getContext().getApplicationContext());
+
         alarmlistRecyclerView.setAdapter(alarmListAdapter);
-
 
         return view;
     }

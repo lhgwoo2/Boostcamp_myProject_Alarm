@@ -24,10 +24,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Alarm.AlarmPopActivity"></activity>
+        <activity android:name=".Alarm.AlarmPopActivity">
+           <!-- android:taskAffinity="com.boostcamp.senti.pop"--></activity>
 
-        <receiver android:name=".Alarm.AlarmReceiver" />
-        <receiver android:name=".Alarm.BootLoadAlarmReceiver"/>
+        <receiver android:name=".Alarm.AlarmReceiver"
+        android:process=":remote"/>
+        <receiver android:name=".Alarm.BootLoadAlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".Alarm.AlarmService"/>
+
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.boostcamp.sentialarm.Alarm;
 import android.util.Log;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
@@ -11,12 +12,20 @@ import io.realm.RealmResults;
 
 public class AlarmDAO {
 
-    Realm realm;
+   public Realm realm;
 
-    public void creatAlarmRealm(){
+    //램 열기
+    public void creatAlarmRealm(RealmConfiguration alarmListConfig){
 
-        //램 디폴트 객체 생성 -> 차후 환경설정된 램 객체를 만들자.
-        realm = Realm.getDefaultInstance();
+        realm = Realm.getInstance(alarmListConfig);
+    }
+
+    // 램 닫기
+    public void closeAlarmRealm(){
+        if (realm != null) {
+            realm.close();
+            realm = null;
+        }
     }
 
     public AlarmDTO getAlarm(int alarmID){
@@ -24,9 +33,7 @@ public class AlarmDAO {
         return alarmDTO;
     }
 
-    public void closeAlarmRealm(){
-        realm.close();
-    }
+
 
     //알람 저장 - 램
     public AlarmDTO setEnrollAlarm(int hour, int minute, boolean alarmOnOff,
@@ -66,7 +73,17 @@ public class AlarmDAO {
         return realm.where(AlarmDTO.class).findAllSorted("id");
     }
 
+    // 램 데이터베이스에서 삭제
+    public void deleteAlarmData(long alamrID){
 
+        AlarmDTO alarmDTO = realm.where(AlarmDTO.class).equalTo("id", alamrID).findFirst();
+        if (alarmDTO != null) {
+            realm.beginTransaction();
+            alarmDTO.deleteFromRealm();
+            realm.commitTransaction();
+        }
+
+    }
 
 
 }

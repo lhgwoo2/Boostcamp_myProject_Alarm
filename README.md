@@ -14,5 +14,5 @@
 * 공공 날씨 API
 * firebase
 
-### [Project working 으로 이동](./daily_project_contents/dailyprojectworking.md) 
+### [개발 일지](./daily_project_contents/dailyprojectworking.md) 
 

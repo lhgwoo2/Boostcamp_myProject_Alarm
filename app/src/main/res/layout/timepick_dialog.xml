@@ -28,14 +28,4 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button_time_dialog_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OK"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:background="@color/white"/>
-
 </LinearLayout>

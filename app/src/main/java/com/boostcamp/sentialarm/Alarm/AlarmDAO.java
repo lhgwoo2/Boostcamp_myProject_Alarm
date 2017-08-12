@@ -2,8 +2,9 @@ package com.boostcamp.sentialarm.Alarm;
 
 import android.util.Log;
 
+import com.boostcamp.sentialarm.Util.ApplicationClass;
+
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
@@ -15,9 +16,8 @@ public class AlarmDAO {
    public Realm realm;
 
     //램 열기
-    public void creatAlarmRealm(RealmConfiguration alarmListConfig){
-
-        realm = Realm.getInstance(alarmListConfig);
+    public void creatAlarmRealm(){
+        realm = Realm.getInstance(ApplicationClass.alarmListConfig);
     }
 
     // 램 닫기
@@ -34,13 +34,12 @@ public class AlarmDAO {
     }
 
 
-
     //알람 저장 - 램
     public AlarmDTO setEnrollAlarm(int hour, int minute, boolean alarmOnOff,
                                boolean isMonday, boolean isTuesday, boolean isWednesday, boolean isThursday, boolean isFriday, boolean isSaturday, boolean isSunday){
 
             realm.beginTransaction();
-            // 저장 객체에 count 주기
+            // 저장 객체에 primary key - count 주기
             int nextId = incremnetAlarmCount();
 
             AlarmDTO alarmDTO = realm.createObject(AlarmDTO.class, nextId);
@@ -76,11 +75,16 @@ public class AlarmDAO {
     // 램 데이터베이스에서 삭제
     public void deleteAlarmData(long alamrID){
 
-        AlarmDTO alarmDTO = realm.where(AlarmDTO.class).equalTo("id", alamrID).findFirst();
+        final AlarmDTO alarmDTO = realm.where(AlarmDTO.class).equalTo("id", alamrID).findFirst();
         if (alarmDTO != null) {
-            realm.beginTransaction();
-            alarmDTO.deleteFromRealm();
-            realm.commitTransaction();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    alarmDTO.deleteFromRealm();
+                }
+            });
+
+
         }
 
     }

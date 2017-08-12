@@ -8,22 +8,11 @@
     tools:context="com.boostcamp.sentialarm.Alarm.AlarmPopActivity">
 
     <RelativeLayout
+        android:id="@+id/pop_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-
-        <TextView
-            android:paddingLeft="20dp"
-            android:id="@+id/tv_time_circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="15:30"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            app:font="custom1" />
 
     </RelativeLayout>
 
@@ -32,6 +21,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/alarmpop_tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/mpv"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="15:30"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            app:font="custom1" />
 
         <co.mobiwise.library.MusicPlayerView
             android:id="@+id/mpv"
@@ -63,9 +64,8 @@
                 android:id="@+id/tv_music_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_gravity="center"
-                android:text="노래제목"
+                android:layout_marginBottom="10dp"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
@@ -74,7 +74,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="가수이름"
                 android:textStyle="normal" />
         </LinearLayout>
 

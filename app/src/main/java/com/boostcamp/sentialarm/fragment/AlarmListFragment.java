@@ -3,6 +3,8 @@ package com.boostcamp.sentialarm.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.sentialarm.Alarm.AlarmDAO;
+import com.boostcamp.sentialarm.Alarm.AlarmDTO;
+import com.boostcamp.sentialarm.MainActivity;
 import com.boostcamp.sentialarm.R;
-import com.boostcamp.sentialarm.Util.Application.ApplicationClass;
+
+import io.realm.RealmResults;
 
 /**
  * Created by 현기 on 2017-07-26.
@@ -32,23 +37,31 @@ public class AlarmListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.alarmlist_fragment, container, false);
         alarmlistRecyclerView = (RecyclerView) view.findViewById(R.id.alarm_list_recycler);
+        alarmlistRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        alarmlistRecyclerView.setHasFixedSize(true);
+        // 어댑터의 내용이 리사이클러뷰의 크기의 영향을 끼치면 false 영향이 없으면 true, - true 일때 리사이클러뷰 최적화가 가능.
+        alarmlistRecyclerView.setHasFixedSize(false);
         alarmlistRecyclerView.setLayoutManager(linearLayoutManager);
+        alarmlistRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        alarmDAO = new AlarmDAO();
-        alarmDAO.creatAlarmRealm(ApplicationClass.alarmListConfig);
+        alarmDAO = ((MainActivity)getActivity()).alarmDAO;
+        RealmResults<AlarmDTO> alarmDTOs = alarmDAO.getAllAlarm();
 
 
         alarmListAdapter = new AlarmListAdapters();
-        alarmListAdapter.setList(alarmDAO.getAllAlarm(), getContext().getApplicationContext());
-
+        alarmListAdapter.setList(alarmDTOs, getContext().getApplicationContext());
+        alarmListAdapter.setAlarmDAO(alarmDAO);
         alarmlistRecyclerView.setAdapter(alarmListAdapter);
 
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+
+        super.onDestroyView();
+    }
 }

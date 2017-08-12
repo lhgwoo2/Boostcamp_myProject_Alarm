@@ -3,15 +3,16 @@ package com.boostcamp.sentialarm;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
-import com.boostcamp.sentialarm.Util.BaseAtivity.BaseActivity;
-
-import io.realm.Realm;
+import com.boostcamp.sentialarm.Alarm.AlarmDAO;
+import com.boostcamp.sentialarm.Util.BaseActivity;
+import com.rd.PageIndicatorView;
 
 public class MainActivity extends BaseActivity {
 
     public MainFragmentAdapter mainFragmentAdapter;
     public ViewPager viewPager;
-    public Realm realm;
+
+    public AlarmDAO alarmDAO=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +23,12 @@ public class MainActivity extends BaseActivity {
         getMainFragmentAdapter();
         viewPager.setAdapter(mainFragmentAdapter);
 
-        //램 데이터베이스 초기화
-        realm = Realm.getDefaultInstance();
+        PageIndicatorView pageIndicatorView = (PageIndicatorView) findViewById(R.id.pageIndicatorView);
+        pageIndicatorView.setViewPager(viewPager);
+
+        alarmDAO = new AlarmDAO();
+        alarmDAO.creatAlarmRealm();
+
 
     }
 
@@ -44,9 +49,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        alarmDAO.closeAlarmRealm();
 
-        //램 종료
-        realm.close();
         super.onDestroy();
     }
 }

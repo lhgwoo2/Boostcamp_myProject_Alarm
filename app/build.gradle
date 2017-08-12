@@ -35,7 +35,9 @@ dependencies {
     compile 'io.realm:android-adapters:2.0.0'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.google.firebase:firebase-database:10.0.1'
-
+    compile 'com.github.bumptech.glide:glide:4.0.0'
+    compile 'com.romandanylyk:pageindicatorview:0.2.0'
+    compile 'com.github.lguipeng:AnimCheckBox:1.0.1'
     compile 'com.github.iammert:MusicPlayerView:e3b937c729'
 
     testCompile 'junit:junit:4.12'

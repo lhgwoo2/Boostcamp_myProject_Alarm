@@ -1,6 +1,5 @@
 package com.boostcamp.sentialarm.Alarm;
 
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,9 +23,6 @@ public class AlarmService extends Service {
 
     MusicPlayer musicPlayer;
     private MusicInfoDAO musicDAO;
-    private int alarmId;
-    private int hour;
-    private int minute;
 
     public Handler mHandler = null;
 
@@ -47,6 +43,10 @@ public class AlarmService extends Service {
         return mBinder;
     }
 
+    public void setHandler(Handler handler)
+    {
+        mHandler = handler;
+    }
 
 
     @Override
@@ -59,10 +59,8 @@ public class AlarmService extends Service {
         musicDAO = new MusicInfoDAO();
         musicDAO.initAlarmFirebase();
 
-
         musicPlayer = new MusicPlayer();
         musicPlayer.createMediaPlayer();
-
 
 
 
@@ -74,12 +72,8 @@ public class AlarmService extends Service {
         // 서비스가 호출될 때마다 실행
         Log.d("test", "서비스의 onStartCommand");
 
-        hour = intent.getIntExtra("hour", 0);
-        minute = intent.getIntExtra("minute", 0);
-        alarmId = intent.getIntExtra("alarmID", 0);
-
         // 날씨API를 활용하여 날씨를 가져온다.
-        String tag = "sunshine";
+        String weather = intent.getStringExtra("weather");
 
         //파이어베이스 데이터를 순차적으로 받기 위한 작업
         new AsyncTask<String, Void, List<MusicInfoDTO>>() {
@@ -103,23 +97,9 @@ public class AlarmService extends Service {
             protected void onPostExecute(List<MusicInfoDTO> musicInfoDTOs) {
                 super.onPostExecute(musicInfoDTOs);
 
-                //Log.i("데이터가 잘 오는가", playList.get(0).getName());
                 Collections.shuffle(musicInfoDTOs);
                 musicPlayer.setMusicInfoList(musicInfoDTOs);
 
-                Intent nextIntent = new Intent(getApplicationContext(), AlarmPopActivity.class);
-                nextIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  //새로운 태스크로 화면을 띄움.
-                PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), alarmId, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                try {
-                    pi.send();
-                } catch (PendingIntent.CanceledException e) {
-                    e.printStackTrace();
-                }
-
-                Log.i("tests","핸들러가 액티비티에서 서비스로 오는것 대기");
-                while(mHandler==null){
-                    mHandler = AlarmPopActivity.mHandler;
-                }
                 Log.i("tests", "핸들러 도착했다. 액티비티에서 서비스로");
                 musicPlayer.setHandler(mHandler);
 
@@ -127,7 +107,7 @@ public class AlarmService extends Service {
                 musicPlayer.musicProcess();
             }
 
-        }.execute(tag);
+        }.execute(weather);
 
 
         // 한번만 실행
@@ -141,6 +121,11 @@ public class AlarmService extends Service {
 
         // 서비스가 종료될 때 실행
         musicPlayer.stopMediaPlayer();
+
+        if(mHandler != null)
+        {
+            mHandler = null;
+        }
         super.onDestroy();
     }
 

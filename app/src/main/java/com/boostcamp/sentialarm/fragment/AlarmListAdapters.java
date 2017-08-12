@@ -3,7 +3,6 @@ package com.boostcamp.sentialarm.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +18,9 @@ import com.boostcamp.sentialarm.Alarm.AlarmDAO;
 import com.boostcamp.sentialarm.Alarm.AlarmDTO;
 import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
 import com.boostcamp.sentialarm.R;
-import com.boostcamp.sentialarm.Util.Application.ApplicationClass;
+import com.github.lguipeng.library.animcheckbox.AnimCheckBox;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
@@ -29,8 +29,9 @@ import io.realm.RealmResults;
 
 public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.ViewHolder> {
 
-    public RealmResults<AlarmDTO> list;
-    public Context context;
+    private RealmResults<AlarmDTO> list;
+    private Context context;
+    private AlarmDAO alarmDAO;
 
     public AlarmListAdapters() {
         super();
@@ -47,10 +48,10 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        Log.i("test","홀드 포지션:"+position);
+        Log.i("test", "홀드 포지션:" + position);
         AlarmDTO alarmDTO = list.get(position);
 
-        holder.onOffSwitch.setChecked(alarmDTO.isAlarmOnOff());
+        holder.onOffCheck.setChecked(alarmDTO.isAlarmOnOff());
 
         holder.monCheck.setChecked(alarmDTO.isMonday());
         holder.tuesCheck.setChecked(alarmDTO.isTuesday());
@@ -62,7 +63,7 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
 
 
         holder.timeView.setText(presentFullTime(alarmDTO.getAlarmHour(), alarmDTO.getAlarmMinute()));
-        holder.alarmCardView.setOnLongClickListener(longClickCardView(alarmDTO.getId(), position));
+        holder.alarmListView.setOnLongClickListener(longClickView(alarmDTO.getId(), position));
 
         holder.monCheck.setOnCheckedChangeListener(checkedChangeListener(alarmDTO));
         holder.tuesCheck.setOnCheckedChangeListener(checkedChangeListener(alarmDTO));
@@ -72,12 +73,12 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
         holder.satCheck.setOnCheckedChangeListener(checkedChangeListener(alarmDTO));
         holder.sunCheck.setOnCheckedChangeListener(checkedChangeListener(alarmDTO));
 
-        holder.onOffSwitch.setOnCheckedChangeListener(switchOnCheckedChangeListener(alarmDTO));
+        holder.onOffCheck.setOnCheckedChangeListener(switchOnCheckedChangeListener(alarmDTO));
 
 
     }
 
-    public void setList(RealmResults<AlarmDTO> list, Context context){
+    public void setList(RealmResults<AlarmDTO> list, Context context) {
         this.list = list;
         setHasStableIds(true);
         this.context = context;
@@ -105,29 +106,29 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
     }
 
     //스위치 리스너로 알람 해제
-    public Switch.OnCheckedChangeListener switchOnCheckedChangeListener(final AlarmDTO alarmDTO){
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean switchCheck) {
-                Log.i("알람해제 스위치", switchCheck+"");
+    public AnimCheckBox.OnCheckedChangeListener switchOnCheckedChangeListener(final AlarmDTO alarmDTO) {
 
-                AlarmDAO dao = new AlarmDAO();
-                dao.creatAlarmRealm(ApplicationClass.alarmListConfig);
-                dao.realm.beginTransaction();
-                alarmDTO.setAlarmOnOff(switchCheck);
-                dao.realm.commitTransaction();
-                dao.closeAlarmRealm();
+        return new AnimCheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onChange(AnimCheckBox animCheckBox, boolean isChecked) {
+                Log.i("알람해제 스위치", isChecked + "");
+
+
+                alarmDAO.realm.beginTransaction();
+                alarmDTO.setAlarmOnOff(isChecked);
+                alarmDAO.realm.commitTransaction();
+
 
                 //알람을 끌 경우
-                if(!switchCheck) {
+                if (!isChecked) {
                     AlarmScheduler.releaseAlarm(alarmDTO.getId(), context);
-                }else{ // 알람을 킬 경우
+                } else { // 알람을 킬 경우
                     // 알람 등록
-                    AlarmScheduler.registerAlarm(context,alarmDTO.getId(),alarmDTO.getAlarmHour(),alarmDTO.getAlarmMinute());
+                    AlarmScheduler.registerAlarm(context, alarmDTO.getId(), alarmDTO.getAlarmHour(), alarmDTO.getAlarmMinute());
                 }
                 notifyDataSetChanged();
-
             }
+
         };
     }
 
@@ -140,89 +141,85 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                 int checkId = compoundButton.getId();
                 Log.i("체크박스", "ㄷㄹㅇ" + checkId);
 
-                AlarmDAO dao = new AlarmDAO();
-                dao.creatAlarmRealm(ApplicationClass.alarmListConfig);
-                dao.realm.beginTransaction();
                 checkBoxValueChange(checkId, alarmDTO);
-
-                list = dao.getAllAlarm();
-
-                dao.realm.commitTransaction();
-
-
-                dao.closeAlarmRealm();
-
-
                 notifyDataSetChanged();
             }
         };
     }
 
-    private void checkBoxValueChange(int checkId , AlarmDTO alarmDTO) {
+    private void checkBoxValueChange(final int checkId, final AlarmDTO alarmDTO) {
 
-        switch (checkId) {
-            case R.id.alarm_list_view_monday:
-                if(alarmDTO.isMonday()==false){
-                    alarmDTO.setMonday(true);
-                }else{
-                    alarmDTO.setMonday(false);
+        alarmDAO.realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+
+                AlarmDTO alarm = realm.where(AlarmDTO.class).equalTo("id", alarmDTO.getId()).findFirst();
+                switch (checkId) {
+                    case R.id.alarm_list_view_monday:
+                        if (alarmDTO.isMonday() == false) {
+                            alarm.setMonday(true);
+                        } else {
+                            alarm.setMonday(false);
+                        }
+                        Log.i("체크박스", "월요일변경" + alarmDTO.isMonday());
+                        break;
+                    case R.id.alarm_list_view_tuesday:
+                        if (alarmDTO.isTuesday() == false) {
+                            alarm.setTuesday(true);
+                        } else {
+                            alarm.setTuesday(false);
+                        }
+                        Log.i("체크박스", "화요일변경");
+                        break;
+                    case R.id.alarm_list_view_wednesday:
+                        if (alarmDTO.isWednesday() == false) {
+                            alarm.setWednesday(true);
+                        } else {
+                            alarm.setWednesday(false);
+                        }
+                        Log.i("체크박스", "수요일변경");
+                        break;
+                    case R.id.alarm_list_view_thursday:
+                        if (alarmDTO.isThursday() == false) {
+                            alarm.setThursday(true);
+                        } else {
+                            alarm.setThursday(false);
+                        }
+                        Log.i("체크박스", "목요일변경");
+                        break;
+                    case R.id.alarm_list_view_friday:
+                        if (alarmDTO.isFriday() == false) {
+                            alarm.setFriday(true);
+                        } else {
+                            alarm.setFriday(false);
+                        }
+                        Log.i("체크박스", "금요일변경");
+                        break;
+                    case R.id.alarm_list_view_saturday:
+                        if (alarmDTO.isSaturday() == false) {
+                            alarm.setSaturday(true);
+                        } else {
+                            alarm.setSaturday(false);
+                        }
+                        Log.i("체크박스", "토요일변경");
+                        break;
+                    case R.id.alarm_list_view_sunday:
+                        if (alarmDTO.isSunday() == false) {
+                            alarm.setSunday(true);
+                        } else {
+                            alarm.setSunday(false);
+                        }
+                        Log.i("체크박스", "일요일변경");
+                        break;
                 }
-                Log.i("체크박스", "월요일변경"+alarmDTO.isMonday());
-                break;
-            case R.id.alarm_list_view_tuesday:
-                if(alarmDTO.isTuesday()==false){
-                    alarmDTO.setTuesday(true);
-                }else{
-                    alarmDTO.setTuesday(false);
-                }
-                Log.i("체크박스", "화요일변경");
-                break;
-            case R.id.alarm_list_view_wednesday:
-                if(alarmDTO.isWednesday()==false){
-                    alarmDTO.setWednesday(true);
-                }else{
-                    alarmDTO.setWednesday(false);
-                }
-                Log.i("체크박스", "수요일변경");
-                break;
-            case R.id.alarm_list_view_thursday:
-                if(alarmDTO.isThursday()==false){
-                    alarmDTO.setThursday(true);
-                }else{
-                    alarmDTO.setThursday(false);
-                }
-                Log.i("체크박스", "목요일변경");
-                break;
-            case R.id.alarm_list_view_friday:
-                if(alarmDTO.isFriday()==false){
-                    alarmDTO.setFriday(true);
-                }else{
-                    alarmDTO.setFriday(false);
-                }
-                Log.i("체크박스", "금요일변경");
-                break;
-            case R.id.alarm_list_view_saturday:
-                if(alarmDTO.isSaturday()==false){
-                    alarmDTO.setSaturday(true);
-                }else{
-                    alarmDTO.setSaturday(false);
-                }
-                Log.i("체크박스", "토요일변경");
-                break;
-            case R.id.alarm_list_view_sunday:
-                if(alarmDTO.isSunday()==false){
-                    alarmDTO.setSunday(true);
-                }else{
-                    alarmDTO.setSunday(false);
-                }
-                Log.i("체크박스", "일요일변경");
-                break;
-        }
+            }
+        });
+
     }
 
 
     // 뷰 길게 클릭 - 삭제 다이얼로그 띄우기
-    public View.OnLongClickListener longClickCardView(final long id, final int position) {
+    public View.OnLongClickListener longClickView(final long id, final int position) {
 
         return new View.OnLongClickListener() {
             @Override
@@ -234,11 +231,7 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        AlarmDAO alarmDAO = new AlarmDAO();
-                        alarmDAO.creatAlarmRealm(ApplicationClass.alarmListConfig);
                         alarmDAO.deleteAlarmData(id);
-                        alarmDAO.closeAlarmRealm();
-
                         notifyDataSetChanged();
 
                         Toast.makeText(context.getApplicationContext(), "알람을 지웠습니다^^", Toast.LENGTH_LONG).show();
@@ -258,14 +251,17 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
         };
     }
 
+    public void setAlarmDAO(AlarmDAO alarmDAO) {
+        this.alarmDAO = alarmDAO;
+    }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
         public TextView timeView;
 
-        public CardView alarmCardView;
+        public LinearLayout alarmListView;
 
         public CheckBox monCheck;
         public CheckBox tuesCheck;
@@ -275,12 +271,12 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
         public CheckBox satCheck;
         public CheckBox sunCheck;
 
-        public Switch onOffSwitch;
+        public AnimCheckBox onOffCheck;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            alarmCardView = (CardView) itemView.findViewById(R.id.alarm_list_itemView);
+            alarmListView = (LinearLayout) itemView.findViewById(R.id.alarm_list_itemView);
 
             timeView = (TextView) itemView.findViewById(R.id.alarm_list_timeView);
             monCheck = (CheckBox) itemView.findViewById(R.id.alarm_list_view_monday);
@@ -291,7 +287,7 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
             satCheck = (CheckBox) itemView.findViewById(R.id.alarm_list_view_saturday);
             sunCheck = (CheckBox) itemView.findViewById(R.id.alarm_list_view_sunday);
 
-            onOffSwitch = (Switch) itemView.findViewById(R.id.alarm_switch);
+            onOffCheck = (AnimCheckBox) itemView.findViewById(R.id.alarm_on_off_checkbox);
 
         }
     }

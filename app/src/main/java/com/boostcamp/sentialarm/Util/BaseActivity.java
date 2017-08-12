@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.Util.BaseAtivity;
+package com.boostcamp.sentialarm.Util;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;

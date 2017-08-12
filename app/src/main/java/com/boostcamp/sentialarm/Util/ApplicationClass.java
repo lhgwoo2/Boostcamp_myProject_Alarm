@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.Util.Application;
+package com.boostcamp.sentialarm.Util;
 
 import android.app.Application;
 
@@ -25,7 +25,7 @@ public class ApplicationClass extends Application {
         //realm DB 초기화
         Realm.init(this);
 
-        //Realm.deleteRealm(Realm.getDefaultConfiguration());
+
 
         //폰트
         Typekit.getInstance()
@@ -36,15 +36,16 @@ public class ApplicationClass extends Application {
 
         alarmListConfig = new RealmConfiguration.Builder()
                 .name("alarmList.realm")
-                .schemaVersion(1)
                 .build();
 
 
         songListConfig = new RealmConfiguration.Builder()
                 .name("songList.realm")
-                .schemaVersion(2)
                 .build();
 
+
+      /* Realm.deleteRealm(songListConfig);
+        Realm.deleteRealm(alarmListConfig);*/
     }
 
 

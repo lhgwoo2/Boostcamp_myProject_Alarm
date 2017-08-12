@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,36 +15,42 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.boostcamp.sentialarm.API.Jamendo.DTO.MusicDTO;
-import com.boostcamp.sentialarm.AlarmSong.SongDTO;
+import com.boostcamp.sentialarm.AlarmSong.SongDAO;
 import com.boostcamp.sentialarm.R;
-import com.boostcamp.sentialarm.Util.Application.ApplicationClass;
-import com.boostcamp.sentialarm.Util.BaseAtivity.BaseActivity;
-
-import java.util.Date;
+import com.boostcamp.sentialarm.Util.BaseActivity;
+import com.boostcamp.sentialarm.Util.BitmapHelper;
 
 import co.mobiwise.library.MusicPlayerView;
-import io.realm.Realm;
 
 public class AlarmPopActivity extends BaseActivity {
 
-    AlarmService mService;
-    boolean mBound = false;
+    private AlarmService mService = null;
+    private boolean mIsBound;
 
     public static int HANDLER_MESSAGE = 1;
-    private static MusicDTO musicDTO;
+    private MusicDTO musicDTO;
 
-    public static MusicPlayerView mpv;
-    public static TextView textViewMusicTitle;
-    public static TextView textViewMusicianName;
+    private MusicPlayerView mpv;
+    private TextView textViewMusicTitle;
+    private TextView textViewMusicianName;
+    private TextView timeTextView;
 
-    public static Handler mHandler = new Handler(){
+    private int hour;
+    private int minute;
+    private int alarmId;
+
+
+    private BitmapHelper bitmapHelper;
+
+
+    public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what == HANDLER_MESSAGE){   // Message id 가 HANDLER_MESSAGE 이면
-                Log.i("tests","핸들러메시지 도착:"+msg.obj.toString());
+            if (msg.what == HANDLER_MESSAGE) {   // Message id 가 HANDLER_MESSAGE 이면
+                Log.i("tests", "핸들러메시지 도착:" + msg.obj.toString());
                 musicDTO = (MusicDTO) msg.obj;
                 mpv.setCoverURL(musicDTO.getResults().get(0).getImage());
-                mpv.setMax((int)musicDTO.getResults().get(0).getDuration());
+                mpv.setMax((int) musicDTO.getResults().get(0).getDuration());
                 mpv.start();
 
                 textViewMusicTitle.setText(musicDTO.getResults().get(0).getName());
@@ -53,30 +60,26 @@ public class AlarmPopActivity extends BaseActivity {
                     @Override
                     protected String doInBackground(Void... voids) {
 
-                        // 송리스트에 데이터 저장
-                        Realm realm = Realm.getInstance(ApplicationClass.songListConfig);
+                        Log.i("tests","이미지 저장 준비");
+                        //음악 이미지 다운로드드
+                        Bitmap imgBitmap = bitmapHelper.getBitmapOnURL(musicDTO.getResults().get(0).getImage());
+                        String imgFileName = bitmapHelper.bitmapSaveInApp(getApplicationContext(), imgBitmap, musicDTO);
 
-                        realm.executeTransactionAsync(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                SongDTO songDTO = realm.createObject(SongDTO.class);
-                                songDTO.setId(0);
-                                songDTO.setArtistName(musicDTO.getResults().get(0).getArtist_name());
-                                songDTO.setMusicTitle(musicDTO.getResults().get(0).getName());
-                                songDTO.setSongShareURL(musicDTO.getResults().get(0).getShareurl());
-                                songDTO.setPlayDate(new Date());
-
-                                musicDTO.getResults().get(0);
-                            }
-                        });
-
-                        return null;
+                        Log.i("tests","이미지 저장 완료");
+                        return imgFileName;
                     }
 
                     @Override
-                    protected void onPostExecute(String s) {
-                        super.onPostExecute(s);
+                    protected void onPostExecute(String fileName) {
+                        super.onPostExecute(fileName);
 
+                        SongDAO songDAO = new SongDAO();
+                        songDAO.createSongRealm();
+
+                        //음악 재생 기록 저장
+                        songDAO.setSongData(musicDTO, fileName);
+
+                        songDAO.closeSongRealm();
 
                     }
                 }.execute();
@@ -88,18 +91,18 @@ public class AlarmPopActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.i("알람실행", "처음화면");
+
+
+
+        bitmapHelper = new BitmapHelper();
+
         setContentView(R.layout.activity_alarm_pop);
 
-        //ImageView iv = (ImageView) findViewById(R.id.iv_music_circle);
-
-        /*
-        Animation anim = AnimationUtils.loadAnimation(
-                getApplicationContext(), // 현재 화면의 제어권자
-                R.anim.rotate_anim);    // 설정한 에니메이션 파일
-        iv.startAnimation(anim);
-        */
-        textViewMusicTitle = (TextView)findViewById(R.id.tv_music_title) ;
-        textViewMusicianName = (TextView)findViewById(R.id.tv_music_musician_name);
+        textViewMusicTitle = (TextView) findViewById(R.id.tv_music_title);
+        textViewMusicianName = (TextView) findViewById(R.id.tv_music_musician_name);
+        timeTextView = (TextView) findViewById(R.id.alarmpop_tv_time);
 
         mpv = (MusicPlayerView) findViewById(R.id.mpv);
         mpv.setProgressEmptyColor(Color.LTGRAY);
@@ -107,48 +110,75 @@ public class AlarmPopActivity extends BaseActivity {
         mpv.setTimeColor(Color.LTGRAY);
 
 
+        Intent receiverIntent = getIntent();
+        hour = receiverIntent.getIntExtra("hour", 0);
+        minute = receiverIntent.getIntExtra("minute", 0);
+        alarmId = receiverIntent.getIntExtra("alarmID", 0);
+
+        setTimeTextView();
+
+
+        Log.i("tests", hour + ":" + minute + " 브로드캐스트릿버에서 왓음.");
+        Intent sendServiceIntent = new Intent(this.getBaseContext(), AlarmService.class);
+
+        String weather = "sunshine";
+        sendServiceIntent.putExtra("weather", weather);
+
+        startService(sendServiceIntent);
+        doBindService();
+
 
     }
+    private void setTimeTextView(){
+        String time = "";
 
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Bind to LocalService
-        Intent intent = new Intent(this, AlarmService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // Unbind from the service
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
+        if(hour<10){
+            time = "0"+hour;
+        }else{
+            time += hour;
         }
+        time += " : ";
+        if(minute<10){
+            time+= "0"+minute;
+        }else{
+            time += minute;
+        }
+
+        timeTextView.setText(time);
     }
 
-    /** Defines callbacks for service binding, passed to bindService() */
     private ServiceConnection mConnection = new ServiceConnection() {
-
         @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            AlarmService.AlarmBinder binder = (AlarmService.AlarmBinder) service;
-            mService = binder.getService();
-            mBound = true;
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mService = ((AlarmService.AlarmBinder) iBinder).getService();
+            mService.setHandler(mHandler);
         }
 
         @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
+        public void onServiceDisconnected(ComponentName componentName) {
+            mService = null;
         }
     };
 
+    private void doBindService() {
+        bindService(new Intent(this,
+                AlarmService.class), mConnection, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
 
+    private void doUnbindService() {
+        if (mIsBound) {
+            // Detach our existing connection.
+            unbindService(mConnection);
+            mIsBound = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        doUnbindService();
+        super.onDestroy();
+    }
 
 
 }

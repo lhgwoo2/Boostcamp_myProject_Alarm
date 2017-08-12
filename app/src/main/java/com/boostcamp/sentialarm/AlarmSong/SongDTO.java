@@ -13,6 +13,7 @@ public class SongDTO extends RealmObject {
 
     @PrimaryKey
     private int id;
+
     private Date playDate;
     private String musicTitle;
     private String artistName;

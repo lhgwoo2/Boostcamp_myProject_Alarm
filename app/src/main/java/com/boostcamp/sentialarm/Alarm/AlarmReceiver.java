@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.boostcamp.sentialarm.Util.Application.ApplicationClass;
-
 /**
  * Created by 현기 on 2017-08-03.
  */
@@ -22,35 +20,36 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        alarmDAO = new AlarmDAO();
-        alarmDAO.creatAlarmRealm(ApplicationClass.alarmListConfig);     // 램 열기
-
         Log.i("알람리시버", "알람왔다.");
         try {
             int alarmId = intent.getIntExtra(KEY_ALARM_ID, -1);
             if (alarmId != -1) {
 
+                alarmDAO = new AlarmDAO();
+                alarmDAO.creatAlarmRealm();     // 램 열기
                 AlarmDTO alarmDTO = alarmDAO.getAlarm(alarmId);
 
                 // 이 알람이 현재 요일에 작동하는지
                 if (AlarmManagerUtil.checkWeekly(alarmDTO)) {
                     Toast.makeText(context, "알림", Toast.LENGTH_LONG).show();
                     AlarmScheduler.registerAlarm(context, alarmDTO.getId(), alarmDTO.getAlarmHour(), alarmDTO.getAlarmMinute());
-                    Intent nextIntent = new Intent(context, AlarmService.class);
+                    Intent nextIntent = new Intent(context, AlarmPopActivity.class);
 
                     nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  //새로운 태스크로 화면을 띄움.
                     nextIntent.putExtra("hour",alarmDTO.getAlarmHour());
                     nextIntent.putExtra("minute", alarmDTO.getAlarmMinute());
                     nextIntent.putExtra("alarmID", alarmId);
-                    PendingIntent pi = PendingIntent.getService(context, alarmId, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pi = PendingIntent.getActivity(context, alarmId, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     pi.send();
                 }
             }
         } catch (PendingIntent.CanceledException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }finally {
+            alarmDAO.closeAlarmRealm();
         }
-        alarmDAO.closeAlarmRealm();
+
     }
 
 

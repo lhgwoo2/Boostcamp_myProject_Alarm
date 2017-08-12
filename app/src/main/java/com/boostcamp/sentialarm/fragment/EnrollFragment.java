@@ -20,7 +20,6 @@ import com.boostcamp.sentialarm.Alarm.AlarmDTO;
 import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
 import com.boostcamp.sentialarm.MainActivity;
 import com.boostcamp.sentialarm.R;
-import com.boostcamp.sentialarm.Util.Application.ApplicationClass;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,8 +54,7 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
         Log.i("tests", "EnrollFragment!");
         View view = inflater.inflate(R.layout.enroll_fragment, container, false);
 
-        alarmDAO = new AlarmDAO();
-        alarmDAO.creatAlarmRealm(ApplicationClass.alarmListConfig);
+        alarmDAO = ((MainActivity)getActivity()).alarmDAO;
 
         initView(view);
         initTime();
@@ -177,8 +175,7 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
 
     @Override
     public void onDestroy() {
-        //realm 해제
-        alarmDAO.closeAlarmRealm();
+
         super.onDestroy();
     }
 }

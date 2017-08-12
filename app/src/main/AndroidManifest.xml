@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".Util.Application.ApplicationClass"
+        android:name=".Util.ApplicationClass"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"/>
         <activity android:name=".LoadingActivity"
@@ -24,8 +24,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Alarm.AlarmPopActivity">
-           <!-- android:taskAffinity="com.boostcamp.senti.pop"--></activity>
+        <activity android:name=".Alarm.AlarmPopActivity"
+            android:launchMode="singleTask"></activity>
 
         <receiver android:name=".Alarm.AlarmReceiver"
         android:process=":remote"/>

@@ -35,7 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:text="12 : 07"
+            android:shadowColor="#FFFFFFFF"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="2.0"
+            android:textColor="@color/black"
             android:textSize="60sp"
             app:font="custom1" />
 

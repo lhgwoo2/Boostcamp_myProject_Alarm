@@ -131,8 +131,6 @@ public class AlarmPopActivity extends BaseActivity {
                 Intent sendServiceIntent = new Intent(getApplicationContext(), AlarmService.class);
 
                 Log.i("weather", weather);
-                weather = "sunshine";
-
                 sendServiceIntent.putExtra("weather", weather);
 
                 // musicplayer 서비스 시작
@@ -280,7 +278,7 @@ public class AlarmPopActivity extends BaseActivity {
             ref+="Night/";
             backFileName+="night_";
         }
-        int range = new Random().nextInt(1)+1;
+        int range = new Random().nextInt(2)+1;
         backFileName+=range+".png";
 
         ref+=backFileName;

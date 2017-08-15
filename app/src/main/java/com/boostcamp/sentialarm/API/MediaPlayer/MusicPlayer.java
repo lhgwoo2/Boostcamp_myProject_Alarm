@@ -154,7 +154,7 @@ public class MusicPlayer {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-                    if (musicCount + 1 < playList.size()) {
+                    if (musicCount + 1 <= playList.size()) {
 
                         //다음트랙 재생
                         mediaPlayer.reset();

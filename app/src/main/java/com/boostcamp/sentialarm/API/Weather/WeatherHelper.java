@@ -73,5 +73,9 @@ public class WeatherHelper {
 
     }
 
+    public void getWeatherBackground(){
+
+    }
+
 
 }

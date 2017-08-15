@@ -70,42 +70,9 @@ public class LocationHelper {
         }
     };
 
-    // GPS가 OFF일 경우 동작
-    public void getLocationNameAsync(final double latitude, final double longitude, final Context context) {
-        new AsyncTask<Void, Void, Address>() {
-            @Override
-            protected Address doInBackground(Void... voids) {
-                geocoder = new Geocoder(context);
-
-                Address address = null;
-                List<Address> list = null;
-                try {
-                    list = geocoder.getFromLocation(latitude, longitude, 1); // 얻어올 값의 개수
-                    address = list.get(0);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return address;
-            }
-
-            @Override
-            protected void onPostExecute(Address address) {
-                super.onPostExecute(address);
-
-                Message msg;
-                msg = mHandler.obtainMessage(AlarmPopActivity.HANDLER_MESSAGE_LOCATION);
-                msg.obj = address;
-                mHandler.sendMessage(msg);
 
 
-            }
-        }.execute();
-
-    }
-
-    // GPS가 ON일 경우 동작
+    // GPS 가져온후 날씨 동작
     public void getLocationNameAsyncBeforeWeather(final double latitude, final double longitude) {
 
         new AsyncTask<Void, Void, Address>() {
@@ -154,6 +121,10 @@ public class LocationHelper {
             manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, mLocationListener, null);
 
             Looper.loop();      //콜백이 응답할 때까지 무한 루프
+
+            //위치 받아오면 리스너 해제
+            manager.removeUpdates(mLocationListener);
+            Log.i("위치", "리스너 해제");
         } catch (SecurityException e) {
             e.printStackTrace();
         }

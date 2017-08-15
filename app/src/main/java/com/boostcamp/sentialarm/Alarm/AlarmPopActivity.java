@@ -36,6 +36,8 @@ public class AlarmPopActivity extends BaseActivity {
     public static int HANDLER_MESSAGE = 1;
     public static int HANDLER_MESSAGE_WEATHER = 2;
     public static int HANDLER_MESSAGE_LOCATION = 3;
+    public static int HANDLER_MESSAGE_WEATHER_BACKGROUND = 4;
+
     private MusicDTO musicDTO;
 
     private MusicPlayerView mpv;
@@ -54,19 +56,10 @@ public class AlarmPopActivity extends BaseActivity {
     private int minute;
     private int alarmId;
 
-    final static double INIT_LATITUDE_NUMBER = 999999;
-    final static double INIT_LONGITUDE_NUMBER = 999999;
-
-    private double latitude = INIT_LATITUDE_NUMBER;
-    private double longitude = INIT_LONGITUDE_NUMBER;
-
-
     private BitmapHelper bitmapHelper;
 
     private SharedPreferences locationSetting;
     private SharedPreferences.Editor editor;
-
-    private LocationManager manager;
 
     private LocationHelper locationHelper;
 
@@ -112,25 +105,43 @@ public class AlarmPopActivity extends BaseActivity {
             } else if (msg.what == HANDLER_MESSAGE_WEATHER) {      //날씨 화면 처리
                 Log.i("날씨", "날씨");
 
-                WeatherRootDTO weatherRootDTO = (WeatherRootDTO)msg.obj;
+                WeatherRootDTO weatherRootDTO = (WeatherRootDTO) msg.obj;
+
 
                 //현재 날씨 입력
                 String weather = weatherRootDTO.getWeather().get(0).getMainCondition();
                 Intent sendServiceIntent = new Intent(getApplicationContext(), AlarmService.class);
 
-                
+                Log.i("weather", weather);
+                weather = "sunshine";
 
                 sendServiceIntent.putExtra("weather", weather);
 
                 startService(sendServiceIntent);
                 doBindService();
 
+                String resWeatherIcon = "@drawable/ic_weather_" + weatherRootDTO.getWeather().get(0).getIcon();
+                int weatherIconID = getResources().getIdentifier(resWeatherIcon, "drawable", getApplication().getPackageName());
+                weatherImageView.setImageResource(weatherIconID);
+
+                String temps[] = String.valueOf(weatherRootDTO.getTemp().getTemp()).split("\\.");
+                tempTextView.setText(temps[0] + "℃");
+                descriptionTextView.setText(weatherRootDTO.getWeather().get(0).getDescription());
+
+
             } else if (msg.what == HANDLER_MESSAGE_LOCATION) {
 
                 Address address = (Address) msg.obj;
                 String locations[] = address.getAddressLine(0).split(" ");
 
-                locationTextView.setText(locations[1] + " " + locations[2]+" "+locations[3]);
+                locationTextView.setText(locations[1] + " " + locations[2] + " " + locations[3]);
+
+
+                // 프리퍼런스에 이전 위치 저장
+                editor = locationSetting.edit();
+                editor.putFloat("latitude", (float) address.getLatitude());
+                editor.putFloat("longitude", (float) address.getLongitude());
+                editor.commit();
             }
         }
     };
@@ -142,19 +153,21 @@ public class AlarmPopActivity extends BaseActivity {
         setContentView(R.layout.activity_alarm_pop);
 
         locationHelper = new LocationHelper();
-        locationHelper.setLocationManager(this);
-        manager = locationHelper.getLocationManager();
+        locationHelper.setLocationManager(getApplicationContext());
+        LocationManager manager = locationHelper.getLocationManager();
 
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {  //gps가 꺼져있으면
+        //프리퍼런스 init, 0은 읽고 쓰기 모두 가능
+        locationSetting = getSharedPreferences("locationSetting", 0);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {  //gps가 꺼져있으면 프리퍼런스에 저장된 이전위치 가져옴.
 
             // 프리퍼런스
-            locationSetting = getSharedPreferences("locationSetting", 0);       // 0은 읽고 쓰기 모두 가능
-            latitude = locationSetting.getFloat("latitude", (float) 37.57599);      //위도               , 초기화 광화문 위치
-            longitude = locationSetting.getFloat("longitude", (float) 126.97692);      //경도 가져오기
+            double latitude = locationSetting.getFloat("latitude", (float) 37.57599);      //위도               , 초기화 광화문 위치
+            double longitude = locationSetting.getFloat("longitude", (float) 126.97692);      //경도 가져오기
 
             //핸들러로 장소 이름을 가져온다.
             locationHelper.setHandler(mHandler);
-            locationHelper.getLocationNameAsync(latitude, longitude, getApplicationContext());
+            locationHelper.getLocationNameAsyncBeforeWeather(latitude, longitude);
 
 
         } else {      //gps가 켜져 있는 경우
@@ -164,36 +177,19 @@ public class AlarmPopActivity extends BaseActivity {
                 @Override
                 protected double[] doInBackground(Void... voids) {
 
-                    LocationHelper locationHelper = new LocationHelper();
-                    locationHelper.setLocationManager(getApplicationContext());
-                    double[] latLon=locationHelper.getLatAndLongitude();
-
-                    return latLon;
+                    return locationHelper.getLatAndLongitude();
                 }
 
                 @Override
                 protected void onPostExecute(double[] latLon) {
                     super.onPostExecute(latLon);
-                    ;
                     //핸들러로 장소이름을 가져온다.
                     locationHelper.setHandler(mHandler);
-                    locationHelper.getLocationNameAsyncBeforeWeather(latLon[0],latLon[1]);
+                    locationHelper.getLocationNameAsyncBeforeWeather(latLon[0], latLon[1]);
 
                 }
             }.execute();
-
-
         }
-
-
-        //프리퍼런스 쓰기
-        /*
-        editor= locationSetting.edit();
-        editor.putFloat("latitude", (float) latitude);
-        editor.putFloat("longitude", (float) longitude);
-        editor.commit();
-        */
-
 
         bitmapHelper = new BitmapHelper();
 

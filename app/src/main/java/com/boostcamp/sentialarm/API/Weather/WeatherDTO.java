@@ -11,7 +11,7 @@ public class WeatherDTO {
     private int id;
     @SerializedName("main")
     private String mainCondition;
-    private String desciption;
+    private String description;
     private String icon;
 
 
@@ -31,12 +31,12 @@ public class WeatherDTO {
         this.mainCondition = mainCondition;
     }
 
-    public String getDesciption() {
-        return desciption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getIcon() {

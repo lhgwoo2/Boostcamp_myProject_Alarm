@@ -3,7 +3,6 @@ package com.boostcamp.sentialarm.fragment;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,7 +50,6 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i("tests", "EnrollFragment!");
         View view = inflater.inflate(R.layout.enroll_fragment, container, false);
 
         alarmDAO = ((MainActivity)getActivity()).alarmDAO;
@@ -95,7 +93,6 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
                     //애니메이션이 끝나고 화면 이동
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        Log.i("등록애니","애니작동");
 
 
                         String time = textViewtime.getText().toString();
@@ -135,7 +132,6 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
     public void onDialogPositiveClick(String sHour, String sMinute) {
         String timeString = sHour +" : "+sMinute;
         textViewtime.setText(timeString);
-        Log.i("휠뷰 시간",timeString);
     }
 
     //시간 영역 선택시 다이얼로그 띄우기

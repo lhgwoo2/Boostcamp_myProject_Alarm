@@ -23,6 +23,7 @@ public class MainActivity extends BaseActivity {
         getMainFragmentAdapter();
         viewPager.setAdapter(mainFragmentAdapter);
 
+
         PageIndicatorView pageIndicatorView = (PageIndicatorView) findViewById(R.id.pageIndicatorView);
         pageIndicatorView.setViewPager(viewPager);
 

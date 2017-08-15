@@ -22,7 +22,7 @@
         android:layout_alignTop="@+id/song_list_item_songimage_iv"
         android:layout_marginLeft="22dp"
         android:layout_marginStart="22dp"
-        android:layout_toEndOf="@+id/song_list_item_songimage_iv"
+        android:singleLine="true"
         android:layout_toLeftOf="@+id/song_list_item_share_url_iv"
         android:layout_toRightOf="@+id/song_list_item_songimage_iv"
         android:text="음악이름"
@@ -32,11 +32,11 @@
         android:id="@+id/song_list_item_artistname_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/song_list_item_musictitle_tv"
-        android:layout_alignStart="@+id/song_list_item_musictitle_tv"
-        android:layout_below="@+id/song_list_item_musictitle_tv"
         android:text="아티스트"
-        android:textStyle="normal" />
+        android:textStyle="normal"
+        android:layout_below="@+id/song_list_item_musictitle_tv"
+        android:layout_alignLeft="@+id/song_list_item_musictitle_tv"
+        android:layout_alignStart="@+id/song_list_item_musictitle_tv" />
 
     <TextView
         android:id="@+id/song_list_item_playdate_tv"

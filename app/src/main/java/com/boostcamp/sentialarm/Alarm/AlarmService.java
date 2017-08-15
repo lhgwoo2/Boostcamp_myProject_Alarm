@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.boostcamp.sentialarm.API.MediaPlayer.MusicInfoDAO;
 import com.boostcamp.sentialarm.API.MediaPlayer.MusicInfoDTO;
@@ -43,8 +42,7 @@ public class AlarmService extends Service {
         return mBinder;
     }
 
-    public void setHandler(Handler handler)
-    {
+    public void setHandler(Handler handler) {
         mHandler = handler;
     }
 
@@ -53,8 +51,6 @@ public class AlarmService extends Service {
     public void onCreate() {
         super.onCreate();
         // 서비스에서 가장 먼저 호출됨(최초에 한번만)
-        Log.d("test", "서비스의 onCreate");
-
         // 파이어베이스에서 데이터 가져오기 초기화
         musicDAO = new MusicInfoDAO();
         musicDAO.initAlarmFirebase();
@@ -63,14 +59,12 @@ public class AlarmService extends Service {
         musicPlayer.createMediaPlayer();
 
 
-
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 서비스가 호출될 때마다 실행
-        Log.d("test", "서비스의 onStartCommand");
 
         // 날씨API를 활용하여 날씨를 가져온다.
         String weather = intent.getStringExtra("weather");
@@ -80,15 +74,14 @@ public class AlarmService extends Service {
             @Override
             protected List<MusicInfoDTO> doInBackground(String... strings) {
 
-                List<MusicInfoDTO> playList=null;
+                List<MusicInfoDTO> playList = null;
                 musicDAO.getSongListInFirebase(strings[0]);
 
 
-                while(playList == null || playList.size() == 0){
-                    playList= musicDAO.getMusicInfoList();
+                while (playList == null || playList.size() == 0) {
+                    playList = musicDAO.getMusicInfoList();
                 }
 
-                Log.i("데이터가 잘 오는가", playList.get(0).getName());
 
                 return playList;
             }
@@ -99,8 +92,6 @@ public class AlarmService extends Service {
 
                 Collections.shuffle(musicInfoDTOs);
                 musicPlayer.setMusicInfoList(musicInfoDTOs);
-
-                Log.i("tests", "핸들러 도착했다. 액티비티에서 서비스로");
                 musicPlayer.setHandler(mHandler);
 
                 //음원 프로세스 시작
@@ -117,13 +108,11 @@ public class AlarmService extends Service {
     @Override
     public void onDestroy() {
 
-        Log.d("test", "서비스의 onDestroy");
 
         // 서비스가 종료될 때 실행
         musicPlayer.stopMediaPlayer();
 
-        if(mHandler != null)
-        {
+        if (mHandler != null) {
             mHandler = null;
         }
         super.onDestroy();

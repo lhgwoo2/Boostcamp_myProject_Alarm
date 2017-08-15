@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * Created by 현기 on 2017-08-08.
@@ -29,7 +28,6 @@ public class AlarmScheduler {
     }
 
     public static void releaseAlarm(int alarmID, Context context){
-        Log.i("알람해제", "알람번호"+alarmID);
         Intent intent  = new Intent(context.getApplicationContext(), AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmID , intent, PendingIntent.FLAG_NO_CREATE); // pending Intent가 없으면 null, 있으면 가져온다.
         AlarmManager alarmManager =  AlarmManagerUtil.getAlarmManager(context);

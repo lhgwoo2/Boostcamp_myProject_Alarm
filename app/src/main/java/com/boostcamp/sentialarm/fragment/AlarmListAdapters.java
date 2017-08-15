@@ -48,8 +48,22 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        Log.i("test", "홀드 포지션:" + position);
+
+        holder.alarmListView.setOnLongClickListener(null);
+
+        holder.monCheck.setOnCheckedChangeListener(null);
+        holder.tuesCheck.setOnCheckedChangeListener(null);
+        holder.wednesCheck.setOnCheckedChangeListener(null);
+        holder.thurCheck.setOnCheckedChangeListener(null);
+        holder.friCheck.setOnCheckedChangeListener(null);
+        holder.satCheck.setOnCheckedChangeListener(null);
+        holder.sunCheck.setOnCheckedChangeListener(null);
+
+        holder.onOffCheck.setOnCheckedChangeListener(null);
+
         AlarmDTO alarmDTO = list.get(position);
+
+
 
         holder.onOffCheck.setChecked(alarmDTO.isAlarmOnOff());
 
@@ -111,8 +125,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
         return new AnimCheckBox.OnCheckedChangeListener() {
             @Override
             public void onChange(AnimCheckBox animCheckBox, boolean isChecked) {
-                Log.i("알람해제 스위치", isChecked + "");
-
 
                 alarmDAO.realm.beginTransaction();
                 alarmDTO.setAlarmOnOff(isChecked);
@@ -139,7 +151,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 int checkId = compoundButton.getId();
-                Log.i("체크박스", "ㄷㄹㅇ" + checkId);
 
                 checkBoxValueChange(checkId, alarmDTO);
                 notifyDataSetChanged();
@@ -161,7 +172,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                         } else {
                             alarm.setMonday(false);
                         }
-                        Log.i("체크박스", "월요일변경" + alarmDTO.isMonday());
                         break;
                     case R.id.alarm_list_view_tuesday:
                         if (alarmDTO.isTuesday() == false) {
@@ -169,7 +179,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                         } else {
                             alarm.setTuesday(false);
                         }
-                        Log.i("체크박스", "화요일변경");
                         break;
                     case R.id.alarm_list_view_wednesday:
                         if (alarmDTO.isWednesday() == false) {
@@ -177,7 +186,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                         } else {
                             alarm.setWednesday(false);
                         }
-                        Log.i("체크박스", "수요일변경");
                         break;
                     case R.id.alarm_list_view_thursday:
                         if (alarmDTO.isThursday() == false) {
@@ -185,7 +193,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                         } else {
                             alarm.setThursday(false);
                         }
-                        Log.i("체크박스", "목요일변경");
                         break;
                     case R.id.alarm_list_view_friday:
                         if (alarmDTO.isFriday() == false) {
@@ -193,7 +200,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                         } else {
                             alarm.setFriday(false);
                         }
-                        Log.i("체크박스", "금요일변경");
                         break;
                     case R.id.alarm_list_view_saturday:
                         if (alarmDTO.isSaturday() == false) {
@@ -201,7 +207,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                         } else {
                             alarm.setSaturday(false);
                         }
-                        Log.i("체크박스", "토요일변경");
                         break;
                     case R.id.alarm_list_view_sunday:
                         if (alarmDTO.isSunday() == false) {
@@ -209,7 +214,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                         } else {
                             alarm.setSunday(false);
                         }
-                        Log.i("체크박스", "일요일변경");
                         break;
                 }
             }
@@ -232,6 +236,10 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         alarmDAO.deleteAlarmData(id);
+
+                        Log.i("알람 지울때","알람 사이즈 갱신");
+                       // list=alarmDAO.getAllAlarm();
+
                         notifyDataSetChanged();
 
                         Toast.makeText(context.getApplicationContext(), "알람을 지웠습니다^^", Toast.LENGTH_LONG).show();

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
 
         String sDate = changeDateToString(currentSongDTO.getPlayDate());
         holder.playDateTextView.setText(sDate);
-        Log.i("플레이시간",sDate);
 
         BitmapHelper bitmapHelper = new BitmapHelper();
         String coverImagePath = bitmapHelper.getImageResourcePath(currentSongDTO.getFileName(),parentContext);

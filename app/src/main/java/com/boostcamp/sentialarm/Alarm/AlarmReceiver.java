@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -20,7 +19,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.i("알람리시버", "알람왔다.");
         try {
             int alarmId = intent.getIntExtra(KEY_ALARM_ID, -1);
             if (alarmId != -1) {

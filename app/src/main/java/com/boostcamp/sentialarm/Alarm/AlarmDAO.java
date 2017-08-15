@@ -1,7 +1,5 @@
 package com.boostcamp.sentialarm.Alarm;
 
-import android.util.Log;
-
 import com.boostcamp.sentialarm.Util.ApplicationClass;
 
 import io.realm.Realm;
@@ -56,7 +54,6 @@ public class AlarmDAO {
             alarmDTO.setSunday(isSunday);
             realm.commitTransaction();
 
-            Log.i("디비 등록","디비알람시간: "+ String.valueOf(alarmDTO.getAlarmHour()+" : "+alarmDTO.getAlarmMinute()));
 
         return alarmDTO;
     }

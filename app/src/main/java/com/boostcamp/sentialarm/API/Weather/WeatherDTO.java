@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by 현기 on 2017-08-14.
  */
 
-class WeatherDTO {
+public class WeatherDTO {
 
     private int id;
     @SerializedName("main")

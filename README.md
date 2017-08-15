@@ -11,8 +11,8 @@
 * 알람매니저, 스케줄러
 * Realm
 * ~~사운드 클라우드 API~~ -> Jamendo API로 변경
-* 공공 날씨 API
-* firebase
+* 공공 날씨 API -> OpenWeatherMap
+* firebase -> realtime database, storage
 
 ### [개발 일지](./daily_project_contents/dailyprojectworking.md) 
 

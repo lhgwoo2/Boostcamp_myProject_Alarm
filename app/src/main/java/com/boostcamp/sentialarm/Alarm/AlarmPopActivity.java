@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boostcamp.sentialarm.API.Jamendo.DTO.MusicDTO;
+import com.boostcamp.sentialarm.API.Weather.WeatherRootDTO;
 import com.boostcamp.sentialarm.AlarmSong.SongDAO;
 import com.boostcamp.sentialarm.R;
 import com.boostcamp.sentialarm.Util.BaseActivity;
@@ -110,6 +111,19 @@ public class AlarmPopActivity extends BaseActivity {
                 }.execute();
             } else if (msg.what == HANDLER_MESSAGE_WEATHER) {      //날씨 화면 처리
                 Log.i("날씨", "날씨");
+
+                WeatherRootDTO weatherRootDTO = (WeatherRootDTO)msg.obj;
+
+                //현재 날씨 입력
+                String weather = weatherRootDTO.getWeather().get(0).getMainCondition();
+                Intent sendServiceIntent = new Intent(getApplicationContext(), AlarmService.class);
+
+                
+
+                sendServiceIntent.putExtra("weather", weather);
+
+                startService(sendServiceIntent);
+                doBindService();
 
             } else if (msg.what == HANDLER_MESSAGE_LOCATION) {
 
@@ -206,15 +220,6 @@ public class AlarmPopActivity extends BaseActivity {
         alarmId = receiverIntent.getIntExtra("alarmID", 0);
 
         setTimeTextView();
-
-
-        Intent sendServiceIntent = new Intent(this.getBaseContext(), AlarmService.class);
-
-        String weather = "sunshine";
-        sendServiceIntent.putExtra("weather", weather);
-
-        startService(sendServiceIntent);
-        doBindService();
 
 
     }

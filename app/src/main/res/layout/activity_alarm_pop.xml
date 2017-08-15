@@ -1,136 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.boostcamp.sentialarm.Alarm.AlarmPopActivity">
 
-    <RelativeLayout
-        android:id="@+id/pop_layout"
+    <com.flaviofaria.kenburnsview.KenBurnsView
+        android:id="@+id/pop_backgound_kenburns_iv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/alarmpop_tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:gravity="center"
-            android:text="15:30"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            app:font="custom1" />
+
+    <LinearLayout
+        android:id="@+id/pop_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/pop_weather_layout"
-            android:layout_width="wrap_content"
+            android:id="@+id/pop_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp">
+            android:layout_weight="1">
 
             <TextView
-                android:id="@+id/pop_weather_location_tv"
+                android:id="@+id/alarmpop_tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignRight="@+id/pop_weather_inner_layout"
-                android:gravity="end"
-                android:text="성남시 분당구"
-                android:textStyle="normal" />
+                android:layout_alignBottom="@+id/pop_weather_layout"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center"
+                android:shadowColor="#FF464646"
+                android:shadowDx="2.0"
+                android:shadowDy="2.0"
+                android:shadowRadius="2.0"
+                android:textColor="@color/white"
+                android:textSize="60sp"
+                app:font="custom1" />
 
-            <LinearLayout
-                android:id="@+id/pop_weather_inner_layout"
+            <RelativeLayout
+                android:id="@+id/pop_weather_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pop_weather_location_tv"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/pop_weather_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_weather_03d" />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
+                android:background="#88000000"
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/pop_weather_temperate_tv"
+                    android:id="@+id/pop_weather_location_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="23℃"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:layout_alignParentTop="true"
+                    android:layout_alignRight="@+id/pop_weather_inner_layout"
+                    android:gravity="end"
+                    android:textColor="@color/white"
+                    android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/pop_weather_description_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@id/pop_weather_inner_layout"
-                android:layout_below="@+id/pop_weather_inner_layout"
-                android:text="약간 흐림"
-                android:textStyle="normal" />
+                <LinearLayout
+                    android:id="@+id/pop_weather_inner_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pop_weather_location_tv"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/pop_weather_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/pop_weather_temperate_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/pop_weather_description_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/pop_weather_inner_layout"
+                    android:layout_below="@+id/pop_weather_inner_layout"
+                    android:textColor="@color/white"
+                    android:textStyle="normal" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <co.mobiwise.library.MusicPlayerView
+                android:id="@+id/mpv"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerInParent="true"
+                app:buttonColor="#FF0028"
+                app:progressEmptyColor="#88FFFFFF"
+                app:progressLoadedColor="#88000000"
+                app:textColor="#FFFFFF"
+                app:textSize="14sp" />
 
 
         </RelativeLayout>
 
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <co.mobiwise.library.MusicPlayerView
-            android:id="@+id/mpv"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_centerInParent="true"
-            app:buttonColor="#FF0028"
-            app:progressEmptyColor="#20FFFFFF"
-            app:progressLoadedColor="#00815E"
-            app:textColor="#80FFFFFF"
-            app:textSize="14sp" />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_music_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/layout_music_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/tv_music_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_music_musician_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textStyle="normal" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_music_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:shadowColor="#FF464646"
+                    android:shadowDx="2.0"
+                    android:shadowDy="2.0"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_music_musician_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:shadowColor="#FF464646"
+                    android:shadowDx="2.0"
+                    android:shadowDy="2.0"
+                    android:shadowRadius="2.0"
+                    android:textColor="@color/white"
+                    android:textStyle="normal" />
+            </LinearLayout>
 
-</LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+</FrameLayout>

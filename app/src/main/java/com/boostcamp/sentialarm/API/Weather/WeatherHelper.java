@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.boostcamp.sentialarm.Alarm.AlarmPopActivity;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -74,7 +76,7 @@ public class WeatherHelper {
     }
 
     public void getWeatherBackground(){
-
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
 

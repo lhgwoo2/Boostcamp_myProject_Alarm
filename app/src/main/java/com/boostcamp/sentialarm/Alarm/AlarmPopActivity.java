@@ -6,16 +6,18 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boostcamp.sentialarm.API.Jamendo.DTO.MusicDTO;
@@ -25,6 +27,14 @@ import com.boostcamp.sentialarm.R;
 import com.boostcamp.sentialarm.Util.BaseActivity;
 import com.boostcamp.sentialarm.Util.BitmapHelper;
 import com.boostcamp.sentialarm.Util.LocationHelper;
+import com.bumptech.glide.Glide;
+import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.Random;
 
 import co.mobiwise.library.MusicPlayerView;
 
@@ -40,6 +50,8 @@ public class AlarmPopActivity extends BaseActivity {
 
     private MusicDTO musicDTO;
 
+    private LinearLayout popMainLinearLayout;
+
     private MusicPlayerView mpv;
     private TextView textViewMusicTitle;
     private TextView textViewMusicianName;
@@ -52,6 +64,9 @@ public class AlarmPopActivity extends BaseActivity {
     private ImageView weatherImageView;
 
 
+    private KenBurnsView background_kenburnsView;
+
+
     private int hour;
     private int minute;
     private int alarmId;
@@ -62,6 +77,9 @@ public class AlarmPopActivity extends BaseActivity {
     private SharedPreferences.Editor editor;
 
     private LocationHelper locationHelper;
+
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
 
     public Handler mHandler = new Handler() {
@@ -117,6 +135,7 @@ public class AlarmPopActivity extends BaseActivity {
 
                 sendServiceIntent.putExtra("weather", weather);
 
+                // musicplayer 서비스 시작
                 startService(sendServiceIntent);
                 doBindService();
 
@@ -129,6 +148,23 @@ public class AlarmPopActivity extends BaseActivity {
                 descriptionTextView.setText(weatherRootDTO.getWeather().get(0).getDescription());
 
 
+                // 날씨에 따른 파이어베이스 이미지 파일경로 생성
+                String ref = getBackgroundPathInFirebaseStorage(weatherRootDTO);
+
+                Log.i("배경파일이름",ref);
+                StorageReference islandRef = storageRef.child(ref);
+
+                islandRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(getApplicationContext()).load(uri).into(background_kenburnsView);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
             } else if (msg.what == HANDLER_MESSAGE_LOCATION) {
 
                 Address address = (Address) msg.obj;
@@ -142,6 +178,10 @@ public class AlarmPopActivity extends BaseActivity {
                 editor.putFloat("latitude", (float) address.getLatitude());
                 editor.putFloat("longitude", (float) address.getLongitude());
                 editor.commit();
+            } else if(msg.what == HANDLER_MESSAGE_WEATHER_BACKGROUND){
+
+
+                // popMainLinearLayout.setBackground();
             }
         }
     };
@@ -155,6 +195,10 @@ public class AlarmPopActivity extends BaseActivity {
         locationHelper = new LocationHelper();
         locationHelper.setLocationManager(getApplicationContext());
         LocationManager manager = locationHelper.getLocationManager();
+
+        //파이어베이스 저장소 초기화
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
 
         //프리퍼런스 init, 0은 읽고 쓰기 모두 가능
         locationSetting = getSharedPreferences("locationSetting", 0);
@@ -203,11 +247,14 @@ public class AlarmPopActivity extends BaseActivity {
         locationTextView = (TextView) findViewById(R.id.pop_weather_location_tv);
         descriptionTextView = (TextView) findViewById(R.id.pop_weather_description_tv);
         weatherImageView = (ImageView) findViewById(R.id.pop_weather_iv);
+        popMainLinearLayout = (LinearLayout)findViewById(R.id.pop_main_layout);
+        background_kenburnsView = (KenBurnsView) findViewById(R.id.pop_backgound_kenburns_iv);
 
         mpv = (MusicPlayerView) findViewById(R.id.mpv);
-        mpv.setProgressEmptyColor(Color.LTGRAY);
+       /* mpv.setProgressEmptyColor(Color.LTGRAY);
         mpv.setProgressLoadedColor(Color.GRAY);
         mpv.setTimeColor(Color.LTGRAY);
+       */
 
 
         Intent receiverIntent = getIntent();
@@ -219,6 +266,28 @@ public class AlarmPopActivity extends BaseActivity {
 
 
     }
+    private String getBackgroundPathInFirebaseStorage(WeatherRootDTO weatherRootDTO){
+
+        String weather = weatherRootDTO.getWeather().get(0).getMainCondition();
+        String backFileName = weather.toLowerCase()+"_";
+        String ref = weather+"/";
+
+        char iconDaynNight = String.valueOf(weatherRootDTO.getWeather().get(0).getIcon()).charAt(2);
+        if(iconDaynNight=='d'){
+            ref+="Day/";
+            backFileName+="day_";
+        }else if(iconDaynNight=='n'){
+            ref+="Night/";
+            backFileName+="night_";
+        }
+        int range = new Random().nextInt(1)+1;
+        backFileName+=range+".png";
+
+        ref+=backFileName;
+
+        Log.i("이미지 경로",ref);
+        return ref;
+    }
 
     private void setTimeTextView() {
         String time = "";
@@ -228,7 +297,7 @@ public class AlarmPopActivity extends BaseActivity {
         } else {
             time += hour;
         }
-        time += " : ";
+        time += ":";
         if (minute < 10) {
             time += "0" + minute;
         } else {

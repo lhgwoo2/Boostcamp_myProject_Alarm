@@ -44,7 +44,7 @@ public class SongListFragment extends Fragment {
         songListRecyclerView.setLayoutManager(mLayoutManager);
         songListRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        songListAdapter = new SongListAdapter();
+        songListAdapter = new SongListAdapter(getContext());
 
         songDAO = new SongDAO();
         songDAO.createSongRealm();
@@ -56,6 +56,9 @@ public class SongListFragment extends Fragment {
 
         return rootView;
     }
+
+
+
 
     @Override
     public void onDestroyView() {

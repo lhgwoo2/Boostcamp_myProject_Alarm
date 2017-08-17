@@ -34,15 +34,20 @@ public class BitmapHelper {
         return mBitmap;
     }
 
-    public String bitmapSaveInApp(Context context, Bitmap bitmap, MusicDTO musicDTO) {
+    public String bitmapSaveInApp(Context context, Bitmap bitmap, Object obj) {
 
-        String fileName = makeFileNameToJPG(musicDTO);
+        String fileName=null;
+        if(obj instanceof MusicDTO){
+             fileName = makeFileNameToJPG((MusicDTO)obj);
+        }else if(obj instanceof String){
+            fileName = (String)obj;
+        }
 
         FileOutputStream fos = null;
         try {
-
             fos = context.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);       // 품질 80%로 변경
+            Log.i("compress 된 이미지 사이즈", "파일이름 : "+fileName+" 용량:"+fos.getChannel().size()+" byte");
             fos.close();
         } catch (Exception e) {
             Log.e("SAVE_IMAGE", e.getMessage(), e);

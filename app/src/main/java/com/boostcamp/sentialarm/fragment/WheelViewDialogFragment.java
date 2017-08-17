@@ -28,12 +28,21 @@ public class WheelViewDialogFragment extends DialogFragment {
     public WheelView hourWheelView;
     public WheelView minuteWheelView;
 
+    private static WheelViewDialogFragment wheelViewDialogFragment=null;
 
     public interface WheelViewDialogListener {
         public void onDialogPositiveClick(String sHour, String sMinute);
     }
 
     WheelViewDialogListener mListener;
+
+    public static DialogFragment getWheelViewDialogFragmentIns(){
+
+        if(wheelViewDialogFragment==null){
+            wheelViewDialogFragment = new WheelViewDialogFragment();
+        }
+        return wheelViewDialogFragment;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -51,6 +60,7 @@ public class WheelViewDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();

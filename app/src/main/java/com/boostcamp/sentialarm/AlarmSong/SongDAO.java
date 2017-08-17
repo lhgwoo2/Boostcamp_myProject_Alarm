@@ -27,26 +27,26 @@ public class SongDAO {
         return songDTOs;
     }
 
-    public void setSongData(final MusicDTO musicDTO, final String songFileName) {
+
+    public void setSongData(final MusicDTO musicDTO, final WeatherInfoDTO weatherInfoDTO, final String songFileName) {
 
         // 송리스트에 데이터 저장
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 Log.i("tests", "노래저장");
-
                 // 저장 객체에 count 주기
                 int nextId = incrementSongCount();
-                Log.i("tests","id값 증가이후 = "+nextId);
-                SongDTO songDTO = realm.createObject(SongDTO.class, nextId);
 
-                Log.i("tests","song램 객체 생성");
+                SongDTO songDTO = realm.createObject(SongDTO.class, nextId);
+                WeatherInfoDTO realmWeatherInfoDTO = realm.copyToRealm(weatherInfoDTO);
+
                 songDTO.setArtistName(musicDTO.getResults().get(0).getArtist_name());
-                Log.i("tests","song 데이터 아티스트 이름");
                 songDTO.setMusicTitle(musicDTO.getResults().get(0).getName());
                 songDTO.setSongShareURL(musicDTO.getResults().get(0).getShareurl());
                 songDTO.setPlayDate(new Date());
                 songDTO.setFileName(songFileName);
+                songDTO.setWeatherInfoDTO(realmWeatherInfoDTO);
 
                 Log.i("tests","song 데이터 삽입완료");
             }
@@ -62,6 +62,25 @@ public class SongDAO {
     public void closeSongRealm() {
         if (realm != null) {
             realm.close();
+        }
+    }
+
+    public SongDTO getSongDTO(int nextId){
+        SongDTO songDTO = realm.where(SongDTO.class).equalTo("id",nextId).findFirst();
+        return songDTO;
+    }
+
+    // 램 데이터베이스에서 삭제
+    public void deleteSongData(int songID){
+
+        final SongDTO songDTO = realm.where(SongDTO.class).equalTo("id", songID).findFirst();
+        if (songDTO != null) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    songDTO.deleteFromRealm();
+                }
+            });
         }
     }
 }

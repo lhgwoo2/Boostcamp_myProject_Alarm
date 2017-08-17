@@ -24,8 +24,6 @@
         android:layout_height="100dp"
         android:layout_below="@+id/enroll_title"
         android:layout_marginTop="20dp"
-        android:background="@drawable/touch_highlight_selector"
-        android:clickable="true"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -35,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
+            android:clickable="true"
             android:shadowColor="#FFFFFFFF"
             android:shadowDx="2.0"
             android:shadowDy="2.0"

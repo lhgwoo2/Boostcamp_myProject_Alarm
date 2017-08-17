@@ -51,8 +51,8 @@ public class AlarmListFragment extends Fragment {
         RealmResults<AlarmDTO> alarmDTOs = alarmDAO.getAllAlarm();
 
 
-        alarmListAdapter = new AlarmListAdapters();
-        alarmListAdapter.setList(alarmDTOs, getContext().getApplicationContext());
+        alarmListAdapter = new AlarmListAdapters(getContext().getApplicationContext());
+        alarmListAdapter.setList(alarmDTOs);
         alarmListAdapter.setAlarmDAO(alarmDAO);
         alarmlistRecyclerView.setAdapter(alarmListAdapter);
 

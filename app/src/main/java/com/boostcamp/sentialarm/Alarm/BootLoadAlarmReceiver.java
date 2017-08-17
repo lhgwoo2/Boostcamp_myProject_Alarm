@@ -3,6 +3,7 @@ package com.boostcamp.sentialarm.Alarm;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import io.realm.RealmResults;
 
@@ -28,6 +29,8 @@ public class BootLoadAlarmReceiver extends BroadcastReceiver {
             try {
                 alarmDAO.creatAlarmRealm();
                 RealmResults<AlarmDTO> alarms = alarmDAO.getAllAlarm();
+
+                Log.i("부트로더","알람 재등록");
                 for(int i=0; i < alarms.size();i++){
                     AlarmDTO alarmDTO = alarms.get(i);
                     AlarmScheduler.registerAlarm(context.getApplicationContext(), alarmDTO.getId(), alarmDTO.getAlarmHour(), alarmDTO.getAlarmMinute());

@@ -19,6 +19,15 @@ public class SongDTO extends RealmObject {
     private String artistName;
     private String fileName;
     private String songShareURL;
+    private WeatherInfoDTO weatherInfoDTO;
+
+    public WeatherInfoDTO getWeatherInfoDTO() {
+        return weatherInfoDTO;
+    }
+
+    public void setWeatherInfoDTO(WeatherInfoDTO weatherInfoDTO) {
+        this.weatherInfoDTO = weatherInfoDTO;
+    }
 
     public String getSongShareURL() {
         return songShareURL;

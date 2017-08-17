@@ -3,6 +3,7 @@ package com.boostcamp.sentialarm.API.Weather;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.boostcamp.sentialarm.Alarm.AlarmPopActivity;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,6 +44,7 @@ public class WeatherHelper {
                 //날씨 api url
                 String apiURL = String.format("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=77d417c06aaa8c6563ff70d7d967f73e&units=metric", latitude, longitude);
 
+                Log.i("apiURl",apiURL);
                 WeatherRootDTO weatherRootDTO = null;
                 try {
                     JsonReader jsonReader = new JsonReader(new InputStreamReader(new URL(apiURL).openStream()));

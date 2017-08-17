@@ -2,9 +2,9 @@ package com.boostcamp.sentialarm.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +32,12 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
     private RealmResults<AlarmDTO> list;
     private Context context;
     private AlarmDAO alarmDAO;
+    private Vibrator vibrator;
 
-    public AlarmListAdapters() {
+    public AlarmListAdapters(Context context) {
         super();
-
+        this.context = context;
+        vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -47,7 +49,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
 
         holder.alarmListView.setOnLongClickListener(null);
 
@@ -92,11 +93,10 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
 
     }
 
-    public void setList(RealmResults<AlarmDTO> list, Context context) {
+    public void setList(RealmResults<AlarmDTO> list) {
         this.list = list;
-        setHasStableIds(true);
-        this.context = context;
     }
+
 
     @Override
     public int getItemCount() {
@@ -225,10 +225,12 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
     // 뷰 길게 클릭 - 삭제 다이얼로그 띄우기
     public View.OnLongClickListener longClickView(final long id, final int position) {
 
+
+
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-
+                vibrator.vibrate(100);
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                 builder.setMessage("지우실래요?");
                 builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
@@ -236,10 +238,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         alarmDAO.deleteAlarmData(id);
-
-                        Log.i("알람 지울때","알람 사이즈 갱신");
-                       // list=alarmDAO.getAllAlarm();
-
                         notifyDataSetChanged();
 
                         Toast.makeText(context.getApplicationContext(), "알람을 지웠습니다^^", Toast.LENGTH_LONG).show();

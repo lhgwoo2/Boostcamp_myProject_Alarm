@@ -106,7 +106,6 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
                     @Override
                     public void onAnimationEnd(Animation animation) {
 
-
                         String time = textViewtime.getText().toString();
                         String[] times = time.split(":");
                         // 알람 저장
@@ -120,7 +119,6 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
 
                         // 알람 등록
                         AlarmScheduler.registerAlarm(getContext().getApplicationContext(), alarmDTO.getId(), alarmDTO.getAlarmHour(), alarmDTO.getAlarmMinute());
-
 
                         ((MainActivity) getActivity()).getViewPager().setCurrentItem(1);
                     }

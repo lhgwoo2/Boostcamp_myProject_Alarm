@@ -31,7 +31,6 @@ public class AlarmDAO {
         return alarmDTO;
     }
 
-
     //알람 저장 - 램
     public AlarmDTO setEnrollAlarm(int hour, int minute, boolean alarmOnOff,
                                boolean isMonday, boolean isTuesday, boolean isWednesday, boolean isThursday, boolean isFriday, boolean isSaturday, boolean isSunday){

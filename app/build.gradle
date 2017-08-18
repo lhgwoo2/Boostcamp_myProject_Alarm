@@ -25,8 +25,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-
-
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.tsengvn:Typekit:1.0.0'
@@ -45,6 +43,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:10.0.1'
     compile 'com.firebaseui:firebase-ui-storage:0.6.0'
     compile 'com.flaviofaria:kenburnsview:1.0.7'
+    compile 'gun0912.ted:tedpermission:1.0.3'
     testCompile 'junit:junit:4.12'
 }
 

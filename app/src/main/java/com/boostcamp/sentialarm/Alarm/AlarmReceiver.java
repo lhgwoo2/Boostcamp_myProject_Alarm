@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -27,6 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 alarmDAO.creatAlarmRealm();     // 램 열기
                 AlarmDTO alarmDTO = alarmDAO.getAlarm(alarmId);
 
+                Log.i("알람실행", "알람 리시버");
                 // 이 알람이 현재 요일에 작동하는지
                 if (AlarmManagerUtil.checkWeekly(alarmDTO)) {
                     Toast.makeText(context, "알림", Toast.LENGTH_LONG).show();

@@ -66,8 +66,9 @@
 
             <ImageView
                 android:id="@+id/pop_weather_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
                 android:layout_below="@+id/pop_weather_location_tv"
                 android:layout_toLeftOf="@+id/pop_weather_temperate_tv" />
 

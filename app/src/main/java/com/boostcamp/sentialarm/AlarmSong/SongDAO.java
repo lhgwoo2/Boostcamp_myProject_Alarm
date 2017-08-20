@@ -3,6 +3,7 @@ package com.boostcamp.sentialarm.AlarmSong;
 import android.util.Log;
 
 import com.boostcamp.sentialarm.API.Jamendo.DTO.MusicDTO;
+import com.boostcamp.sentialarm.API.MediaPlayer.MusicLocalDTO;
 import com.boostcamp.sentialarm.Util.ApplicationClass;
 
 import java.util.Date;
@@ -46,6 +47,31 @@ public class SongDAO {
                 songDTO.setSongShareURL(musicDTO.getResults().get(0).getShareurl());
                 songDTO.setPlayDate(new Date());
                 songDTO.setFileName(songFileName);
+                songDTO.setWeatherInfoDTO(realmWeatherInfoDTO);
+                songDTO.setLocalSong(false);
+
+                Log.i("tests","song 데이터 삽입완료");
+            }
+        });
+    }
+
+    public void setLocalSongData(final MusicLocalDTO localSongData){
+        // 송리스트에 데이터 저장
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Log.i("tests", "노래저장");
+                // 저장 객체에 count 주기
+                int nextId = incrementSongCount();
+
+                SongDTO songDTO = realm.createObject(SongDTO.class, nextId);
+                WeatherInfoDTO realmWeatherInfoDTO = realm.createObject(WeatherInfoDTO.class);
+
+                songDTO.setArtistName(localSongData.getArtist());
+                songDTO.setMusicTitle(localSongData.getTitle());
+                songDTO.setSongShareURL("content://media/external/audio/media/"+localSongData.getId());
+                songDTO.setPlayDate(new Date());
+                songDTO.setLocalSong(true);
                 songDTO.setWeatherInfoDTO(realmWeatherInfoDTO);
 
                 Log.i("tests","song 데이터 삽입완료");

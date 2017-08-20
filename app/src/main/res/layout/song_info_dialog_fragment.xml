@@ -101,15 +101,13 @@
                 android:id="@+id/song_info_dialog_weather_background_iv"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/bg_clear_day_1" />
+                android:scaleType="centerCrop" />
 
             <ImageView
                 android:id="@+id/song_info_dialog_song_cover_iv"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/images" />
+                android:scaleType="centerCrop" />
 
             <RelativeLayout
                 android:layout_width="125dp"
@@ -163,7 +161,7 @@
                 android:src="@drawable/ic_song_play" />
 
             <ImageView
-                android:id="@+id/song_info_dialog_facebook_button_iv"
+                android:id="@+id/song_info_dialog_share_button_iv"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_facebook" />

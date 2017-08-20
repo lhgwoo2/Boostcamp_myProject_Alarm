@@ -50,6 +50,16 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
 
     private Vibrator vibrator;
 
+    private static EnrollFragment enrollFragment;
+
+    public static EnrollFragment getEnrollFragmentIns(){
+        if(enrollFragment==null){
+            enrollFragment = new EnrollFragment();
+        }
+
+        return enrollFragment;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -167,7 +177,6 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
         wheelDialog = WheelViewDialogFragment.getWheelViewDialogFragmentIns();
         List<Fragment> fList = getActivity().getSupportFragmentManager().getFragments();
         if (!fList.contains(wheelDialog)) {
-            Log.i("wheelDialog 추가", "다이얼로그 추가");
             wheelDialog.show(getActivity().getSupportFragmentManager(), "WheelViewDialogFragment");
         }
 

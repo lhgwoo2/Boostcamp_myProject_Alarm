@@ -35,13 +35,13 @@ public class MainFragmentAdapter extends FragmentStatePagerAdapter {
 
         switch (position){
             case 0 :
-                EnrollFragment enrollFragment = new EnrollFragment();
+                EnrollFragment enrollFragment = EnrollFragment.getEnrollFragmentIns();
                 return enrollFragment;
             case 1 :
-                AlarmListFragment alarmListFragment = new AlarmListFragment();
+                AlarmListFragment alarmListFragment = AlarmListFragment.getAlarmListFragmentIns();
                 return alarmListFragment;
             case 2 :
-                SongListFragment songListFragment = new SongListFragment();
+                SongListFragment songListFragment = SongListFragment.getSongListFragmentIns();
                 return songListFragment;
             default:
                 return null;

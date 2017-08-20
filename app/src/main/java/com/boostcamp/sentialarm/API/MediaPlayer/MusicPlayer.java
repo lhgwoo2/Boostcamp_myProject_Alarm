@@ -1,7 +1,12 @@
 package com.boostcamp.sentialarm.API.MediaPlayer;
 
+import android.content.ContentUris;
+import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -29,10 +34,11 @@ public class MusicPlayer {
 
     private MediaPlayer mediaPlayer;
     private List<MusicInfoDTO> playList;
+    private List<MusicLocalDTO> playLocalList;
     private int musicCount = 0;
     private Gson gson;
 
-    public Handler mHandler=null;
+    public Handler mHandler = null;
 
     public MusicPlayer() {
         gson = new Gson();
@@ -42,8 +48,8 @@ public class MusicPlayer {
         mediaPlayer = new MediaPlayer();
     }
 
-    public void setHandler(Handler mHandler){
-        Log.i("tests","핸들러 뮤직플레이어로 전달");
+    public void setHandler(Handler mHandler) {
+        Log.i("tests", "핸들러 뮤직플레이어로 전달");
         this.mHandler = mHandler;
     }
 
@@ -52,7 +58,61 @@ public class MusicPlayer {
         this.playList = playList;
     }
 
-    // 음원 재생 프로세스
+    public void setMusicLocalList(List<MusicLocalDTO> playList) {
+        playLocalList = playList;
+    }
+
+    public void musicLocalProcess(final Context context) {
+
+        MusicLocalDTO musicLocalDTO = playLocalList.get(musicCount++);
+
+        long id = musicLocalDTO.getId();
+        Uri contentUri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+        if (Build.VERSION.SDK_INT >= 21) {
+            mediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setLegacyStreamType(AudioManager.STREAM_MUSIC).build());
+        } else {
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        }
+
+        try {
+            mediaPlayer.setDataSource(context.getApplicationContext(), contentUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mediaPlayer.prepareAsync();
+        startAsyncMusicPlayer();
+
+
+        //핸들러로 전송
+        Message msg;
+        msg = mHandler.obtainMessage(AlarmPopActivity.HANDLER_MESSAGE);
+        msg.obj = musicLocalDTO;
+        mHandler.sendMessage(msg);
+
+
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                if (musicCount + 1 <= playLocalList.size()) {
+
+                    //다음트랙 재생
+                    mediaPlayer.reset();
+                    musicLocalProcess(context);
+                } else {
+                    mediaPlayer.reset();
+                    musicCount = 0;
+                    musicLocalProcess(context);
+                }
+            }
+        });
+
+
+
+    }
+
+    // 자멘도 음원 재생 프로세스
     public void musicProcess() {
 
         String jamendoURL = addURL();
@@ -90,7 +150,7 @@ public class MusicPlayer {
             msg.obj = musicDTO;
             mHandler.sendMessage(msg);
 
-            Log.i("tests","핸들러 메시지 전달, 뮤직플레이어에서 -> 액티비티");
+            Log.i("tests", "핸들러 메시지 전달, 뮤직플레이어에서 -> 액티비티");
 
             audioUrlString = musicDTO.getResults().get(0).getAudio();
         } catch (Exception e) {
@@ -121,7 +181,12 @@ public class MusicPlayer {
 
         Log.i("콜백 음원URL", mediaURL);
         try {
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                mediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setLegacyStreamType(AudioManager.STREAM_MUSIC).build());
+            } else {
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            }
             mediaPlayer.setDataSource(mediaURL);
             mediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
 
@@ -181,7 +246,7 @@ public class MusicPlayer {
     public void stopMediaPlayer() {
         mediaPlayer.stop();
         mediaPlayer.release();
-        mediaPlayer=null;
+        mediaPlayer = null;
     }
 
 

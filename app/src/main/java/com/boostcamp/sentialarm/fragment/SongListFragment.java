@@ -28,6 +28,15 @@ public class SongListFragment extends Fragment {
 
     private SongDAO songDAO;
 
+    private static SongListFragment songListFragment;
+
+    public static SongListFragment getSongListFragmentIns(){
+        if(songListFragment==null){
+            songListFragment=new SongListFragment();
+        }
+        return songListFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

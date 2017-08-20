@@ -44,7 +44,7 @@ public class ApplicationClass extends Application {
                 .build();
 
 
-      /* Realm.deleteRealm(songListConfig);
+   /*   Realm.deleteRealm(songListConfig);
         Realm.deleteRealm(alarmListConfig);*/
     }
 

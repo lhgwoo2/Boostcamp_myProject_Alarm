@@ -30,6 +30,18 @@ public class AlarmListFragment extends Fragment {
     public AlarmListAdapters alarmListAdapter;
     private AlarmDAO alarmDAO;
 
+    private static AlarmListFragment alarmListFragment;
+
+    public static AlarmListFragment getAlarmListFragmentIns(){
+        if(alarmListFragment==null){
+            alarmListFragment = new AlarmListFragment();
+        }
+
+        return alarmListFragment;
+    }
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

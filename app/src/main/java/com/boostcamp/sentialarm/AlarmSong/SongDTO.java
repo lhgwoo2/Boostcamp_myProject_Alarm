@@ -20,6 +20,15 @@ public class SongDTO extends RealmObject {
     private String fileName;
     private String songShareURL;
     private WeatherInfoDTO weatherInfoDTO;
+    private boolean localSong;
+
+    public boolean isLocalSong() {
+        return localSong;
+    }
+
+    public void setLocalSong(boolean localSong) {
+        this.localSong = localSong;
+    }
 
     public WeatherInfoDTO getWeatherInfoDTO() {
         return weatherInfoDTO;

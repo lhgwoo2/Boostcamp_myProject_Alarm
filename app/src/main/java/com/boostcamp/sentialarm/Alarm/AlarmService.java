@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import com.boostcamp.sentialarm.API.MediaPlayer.MusicInfoDAO;
 import com.boostcamp.sentialarm.API.MediaPlayer.MusicInfoDTO;
+import com.boostcamp.sentialarm.API.MediaPlayer.MusicLocalDTO;
 import com.boostcamp.sentialarm.API.MediaPlayer.MusicPlayer;
 
 import java.util.Collections;
@@ -53,8 +55,6 @@ public class AlarmService extends Service {
         // 서비스에서 가장 먼저 호출됨(최초에 한번만)
         // 파이어베이스에서 데이터 가져오기 초기화
         musicDAO = new MusicInfoDAO();
-        musicDAO.initAlarmFirebase();
-
         musicPlayer = new MusicPlayer();
         musicPlayer.createMediaPlayer();
 
@@ -68,7 +68,69 @@ public class AlarmService extends Service {
 
         // 날씨API를 활용하여 날씨를 가져온다.
         String weather = intent.getStringExtra("weather");
+        boolean isNetworkCheck = intent.getBooleanExtra("network", false);
 
+        if (isNetworkCheck) {
+            musicDAO.initAlarmFirebase();
+            getMusicInNetwork(weather);
+        } else {
+            getMusicInLocal();
+        }
+
+
+        // 한번만 실행
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+
+
+        // 서비스가 종료될 때 실행
+        musicPlayer.stopMediaPlayer();
+
+        if (mHandler != null) {
+            mHandler = null;
+        }
+        super.onDestroy();
+    }
+    private void getMusicInLocal(){
+        new AsyncTask<Void, Void, List<MusicLocalDTO>>() {
+            @Override
+            protected List<MusicLocalDTO> doInBackground(Void... voids) {
+
+                List<MusicLocalDTO> playList = null;
+                musicDAO.getSongListInMyPhone(getApplicationContext());
+
+
+                while (playList == null) {
+                    playList = musicDAO.getMusicLocalDTOList();
+                }
+                return playList;
+            }
+
+            @Override
+            protected void onPostExecute(List<MusicLocalDTO> musicLocalDTOs) {
+                super.onPostExecute(musicLocalDTOs);
+
+                if(musicLocalDTOs.size() != 0){
+                    Collections.shuffle(musicLocalDTOs);
+                    musicPlayer.setMusicLocalList(musicLocalDTOs);
+                    musicPlayer.setHandler(mHandler);
+
+                    //음원 프로세스 시작
+                    musicPlayer.musicLocalProcess(getApplicationContext());
+                }else{
+                    Toast.makeText(getApplicationContext(),"내장된 음원이 없습니다.",Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+        }.execute();
+    }
+
+
+    private void getMusicInNetwork(String weather) {
         //파이어베이스 데이터를 순차적으로 받기 위한 작업
         new AsyncTask<String, Void, List<MusicInfoDTO>>() {
             @Override
@@ -99,24 +161,8 @@ public class AlarmService extends Service {
             }
 
         }.execute(weather);
-
-
-        // 한번만 실행
-        return START_NOT_STICKY;
     }
 
-    @Override
-    public void onDestroy() {
-
-
-        // 서비스가 종료될 때 실행
-        musicPlayer.stopMediaPlayer();
-
-        if (mHandler != null) {
-            mHandler = null;
-        }
-        super.onDestroy();
-    }
 
 
 }

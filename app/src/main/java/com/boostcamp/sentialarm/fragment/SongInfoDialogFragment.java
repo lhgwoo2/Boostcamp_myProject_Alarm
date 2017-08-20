@@ -1,6 +1,8 @@
 package com.boostcamp.sentialarm.fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -41,6 +43,10 @@ public class SongInfoDialogFragment extends DialogFragment {
 
     private ImageView songBackgroundImageView;
 
+    private ImageView songPlayButtonImageView;
+    private ImageView songShareButtonImageView;
+
+
 
     public static SongInfoDialogFragment getSongInfoDialogFragmentIns(){
 
@@ -76,22 +82,49 @@ public class SongInfoDialogFragment extends DialogFragment {
 
         songBackgroundImageView = dialogView.findViewById(R.id.song_info_dialog_background_iv);
 
+
+        songPlayButtonImageView = dialogView.findViewById(R.id.song_info_dialog_play_button_iv);
+        songShareButtonImageView = dialogView.findViewById(R.id.song_info_dialog_share_button_iv);
+
+        songPlayButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(songDTO.isLocalSong()){
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setDataAndType(Uri.parse(songDTO.getSongShareURL()), "audio/mp3");
+                    view.getContext().startActivity(i);
+                }else{
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(songDTO.getSongShareURL()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    view.getContext().getApplicationContext().startActivity(intent);
+                }
+            }
+        });
+
+
         songArtistNameTextView.setText(songDTO.getArtistName());
         songTitleTextView.setText(songDTO.getMusicTitle());
 
         String[] dateAndTime = divideDateAndTime(songDTO);
         songDateTextView.setText(dateAndTime[0]);
         songPlayTimeTextView.setText(dateAndTime[1]);
-        songTempTextView.setText(songDTO.getWeatherInfoDTO().getTemperate());
-        songAddressTextView.setText(songDTO.getWeatherInfoDTO().getAddress());
-        songTempIconImageView.setImageResource(songDTO.getWeatherInfoDTO().getWeatherIconID());
 
 
-        BitmapHelper bitmapHelper = new BitmapHelper();
-        String coverImagePath = bitmapHelper.getImageResourcePath(songDTO.getFileName(),dialogView.getContext());
-        String weatherImagePath = bitmapHelper.getImageResourcePath(songDTO.getWeatherInfoDTO().getWeatherFileName(),dialogView.getContext());
-        Glide.with(dialogView).load(coverImagePath).into(songCoverImageView);
-        Glide.with(dialogView).load(weatherImagePath).into(songWeatherBackImageView);
+        if(!songDTO.isLocalSong()) {
+            songTempTextView.setText(songDTO.getWeatherInfoDTO().getTemperate());
+            songAddressTextView.setText(songDTO.getWeatherInfoDTO().getAddress());
+            songTempIconImageView.setImageResource(songDTO.getWeatherInfoDTO().getWeatherIconID());
+
+
+            BitmapHelper bitmapHelper = new BitmapHelper();
+            String coverImagePath = bitmapHelper.getImageResourcePath(songDTO.getFileName(), dialogView.getContext());
+            String weatherImagePath = bitmapHelper.getImageResourcePath(songDTO.getWeatherInfoDTO().getWeatherFileName(), dialogView.getContext());
+            Glide.with(dialogView).load(coverImagePath).into(songCoverImageView);
+            Glide.with(dialogView).load(weatherImagePath).into(songWeatherBackImageView);
+        }else{
+            Glide.with(dialogView).load(R.drawable.ic_default_record).into(songCoverImageView);
+            Glide.with(dialogView).load(R.drawable.bg_default_localbackground).into(songWeatherBackImageView);
+        }
         Glide.with(dialogView).load(R.drawable.bg_song_dialog_background).into(songBackgroundImageView);
 
         builder.setView(dialogView);

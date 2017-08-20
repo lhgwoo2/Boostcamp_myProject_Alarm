@@ -63,13 +63,22 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
         String sDate = changeDateToString(currentSongDTO.getPlayDate());
         holder.playDateTextView.setText(sDate);
 
-        BitmapHelper bitmapHelper = new BitmapHelper();
-        String coverImagePath = bitmapHelper.getImageResourcePath(currentSongDTO.getFileName(),parentContext);
-        Glide.with(parentContext).load(coverImagePath).into(holder.songCoverImageView);
+        if(currentSongDTO.isLocalSong()){
+            Glide.with(parentContext).load(R.drawable.ic_default_record).into(holder.songCoverImageView);
+            Glide.with(parentContext).load(R.drawable.ic_headphone).into(holder.songShareImageView);
+
+        }else{
+
+            BitmapHelper bitmapHelper = new BitmapHelper();
+            String coverImagePath = bitmapHelper.getImageResourcePath(currentSongDTO.getFileName(),parentContext);
+            Glide.with(parentContext).load(coverImagePath).into(holder.songCoverImageView);
+            Glide.with(parentContext).load(R.drawable.ic_jamendo).into(holder.songShareImageView);
+        }
+
 
     }
     private String changeDateToString(Date date){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 M월 dd일 HH시 mm분 E");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 M월 dd일 HH:mm E요일");
         return simpleDateFormat.format(date);
     }
 
@@ -85,7 +94,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
 
         List<Fragment> fList = ((FragmentActivity)view.getContext()).getSupportFragmentManager().getFragments();
         if(!fList.contains(dialog)){
-            Log.i("dialgo 추가", "다이얼로그 추가");
             dialog.show(((FragmentActivity)view.getContext()).getSupportFragmentManager(), "SongInfoDialogFragment");
         }
 
@@ -139,10 +147,15 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
 
                     final SongDTO songDTO = songDTOs.get(getLayoutPosition());
 
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(songDTO.getSongShareURL()));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    parentContext.getApplicationContext().startActivity(intent);
-
+                    if(songDTO.isLocalSong()){
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setDataAndType(Uri.parse(songDTO.getSongShareURL()), "audio/mp3");
+                        parentContext.startActivity(i);
+                    }else{
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(songDTO.getSongShareURL()));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        parentContext.getApplicationContext().startActivity(intent);
+                    }
                 }
             });
 

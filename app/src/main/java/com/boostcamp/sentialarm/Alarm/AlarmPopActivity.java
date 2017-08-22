@@ -21,6 +21,7 @@ import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -134,6 +135,7 @@ public class AlarmPopActivity extends BaseActivity {
                     arriveLocalSongDataRealm(musicLocalDTO);
                 }
 
+                Log.i("시간", "오나?");
                 //시간 뷰 설정
                 setTimeTextView();
 
@@ -145,6 +147,7 @@ public class AlarmPopActivity extends BaseActivity {
                 String weather = weatherRootDTO.getWeather().get(0).getMainCondition();
                 Intent sendServiceIntent = new Intent(getApplicationContext(), AlarmService.class);
 
+                Log.i("날씨", weather);
                 sendServiceIntent.putExtra("weather", weather);
                 sendServiceIntent.putExtra("network", true);
 
@@ -176,7 +179,12 @@ public class AlarmPopActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        turnOnScreen();
+
         setContentView(R.layout.activity_alarm_pop);
+
+        Intent receiverIntent = getIntent();
+        alarmId = receiverIntent.getIntExtra("alarmID", 0);
 
         initUtil();
         initView();
@@ -201,9 +209,6 @@ public class AlarmPopActivity extends BaseActivity {
         }
 
 
-
-
-
     }
 
     private void initUtil() {
@@ -219,6 +224,14 @@ public class AlarmPopActivity extends BaseActivity {
 
         //프리퍼런스 init, 0은 읽고 쓰기 모두 가능
         locationSetting = getSharedPreferences("locationSetting", 0);
+    }
+    private void turnOnScreen(){
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+                );
     }
 
     private void initView() {
@@ -404,6 +417,8 @@ public class AlarmPopActivity extends BaseActivity {
         //배경 이미지 이름 멤버로 저장 다른곳에 활용을 위해
         backImageFileName = ref[1];
 
+        Log.i("background file Name", ref[1]);
+        Log.i("background ref", ref[0]);
         final StorageReference islandRef = storageRef.child(ref[0]);
 
         islandRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -412,6 +427,8 @@ public class AlarmPopActivity extends BaseActivity {
                 Target<Bitmap> target = Glide.with(getApplicationContext()).asBitmap().load(uri).into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+
+                        Log.i("background file down 완료", backImageFileName);
                         background_kenburnsView.setImageBitmap(resource);
 
                         new AsyncTask<Bitmap, Void, Void>() {
@@ -499,24 +516,22 @@ public class AlarmPopActivity extends BaseActivity {
 
     private void setTimeTextView() {
 
-        Intent receiverIntent = getIntent();
-        hour = receiverIntent.getIntExtra("hour", 0);
-        minute = receiverIntent.getIntExtra("minute", 0);
-        alarmId = receiverIntent.getIntExtra("alarmID", 0);
+        Calendar cal = Calendar.getInstance();
+        hour = cal.get(Calendar.HOUR_OF_DAY);
+        minute = cal.get(Calendar.MINUTE);
 
-        String time = "";
 
-        if (hour < 10) {
-            time = "0" + hour;
-        } else {
-            time += hour;
+        String sHour = hour+"";
+        String sMin = minute+"";
+        if(minute<10){
+            sMin = "0" + minute;
         }
-        time += ":";
-        if (minute < 10) {
-            time += "0" + minute;
-        } else {
-            time += minute;
+        if(hour<10){
+            sHour = "0"+hour;
         }
+
+        String time = sHour+":"+sMin;
+
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일 E요일");
         String curDate = simpleDateFormat.format(new Date());

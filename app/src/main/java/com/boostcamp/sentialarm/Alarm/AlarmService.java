@@ -139,7 +139,6 @@ public class AlarmService extends Service {
                 List<MusicInfoDTO> playList = null;
                 musicDAO.getSongListInFirebase(strings[0]);
 
-
                 while (playList == null || playList.size() == 0) {
                     playList = musicDAO.getMusicInfoList();
                 }

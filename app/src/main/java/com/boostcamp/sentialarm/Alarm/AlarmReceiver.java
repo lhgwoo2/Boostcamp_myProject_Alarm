@@ -29,6 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 AlarmDTO alarmDTO = alarmDAO.getAlarm(alarmId);
 
                 Log.i("알람실행", "알람 리시버");
+
                 // 이 알람이 현재 요일에 작동하는지
                 if (AlarmManagerUtil.checkWeekly(alarmDTO)) {
                     Toast.makeText(context, "알림", Toast.LENGTH_LONG).show();
@@ -36,8 +37,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                     Intent nextIntent = new Intent(context, AlarmPopActivity.class);
 
                     nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  //새로운 태스크로 화면을 띄움.
-                    nextIntent.putExtra("hour",alarmDTO.getAlarmHour());
-                    nextIntent.putExtra("minute", alarmDTO.getAlarmMinute());
                     nextIntent.putExtra("alarmID", alarmId);
                     PendingIntent pi = PendingIntent.getActivity(context, alarmId, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     pi.send();

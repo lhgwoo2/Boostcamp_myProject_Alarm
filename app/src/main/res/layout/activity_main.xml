@@ -11,21 +11,35 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="70dp"/>
+        android:layout_height="match_parent"/>
 
-    <com.rd.PageIndicatorView
-        android:id="@+id/pageIndicatorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        app:piv_animationType="swap"
-        app:piv_dynamicCount="true"
-        app:piv_selectedColor="@color/colorAccent"
-        app:piv_unselectedColor="@color/colorWhiteBlue"
-        app:piv_interactiveAnimation="true"
-        app:piv_viewPager="@id/view_pager" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#AA000000"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/home_layout"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_navi_home"/>
+
+        </LinearLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.design.widget.TabLayout>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boostcamp.sentialarm.Alarm.AlarmDAO;
@@ -20,12 +20,15 @@ import com.boostcamp.sentialarm.Alarm.AlarmDTO;
 import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
 import com.boostcamp.sentialarm.MainActivity;
 import com.boostcamp.sentialarm.R;
+import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class EnrollFragment extends Fragment implements WheelViewDialogFragment.WheelViewDialogListener {
+
+    private ImageView enrollbackgroundImageView;
 
     private TextView textViewtime;
 
@@ -37,7 +40,7 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
     private CheckBox checkSatEnroll;
     private CheckBox checkSunEnroll;
 
-    private ImageButton enrollButton;
+    private TextView enrollButton;
 
     private View.OnClickListener timeClickListener;
 
@@ -83,6 +86,9 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
     }
 
     private void initView(View view) {
+
+        enrollbackgroundImageView = (ImageView) view.findViewById(R.id.enroll_background_iv);
+
         textViewtime = (TextView) view.findViewById(R.id.tv_time);
 
         checkMonEnroll = (CheckBox) view.findViewById(R.id.check_mon_enroll);
@@ -93,8 +99,9 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
         checkSatEnroll = (CheckBox) view.findViewById(R.id.check_sat_enroll);
         checkSunEnroll = (CheckBox) view.findViewById(R.id.check_sun_enroll);
 
-        enrollButton = (ImageButton) view.findViewById(R.id.enroll_button);
+        enrollButton = (TextView) view.findViewById(R.id.enroll_button);
 
+        Glide.with(view).load(R.drawable.bg_enroll_background).into(enrollbackgroundImageView);
 
     }
 

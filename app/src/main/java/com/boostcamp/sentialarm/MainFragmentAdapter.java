@@ -49,6 +49,13 @@ public class MainFragmentAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+
+
+        return super.getPageTitle(position);
+    }
+
+    @Override
     public int getCount() {
         return FRAGMENT_COUNT;
     }

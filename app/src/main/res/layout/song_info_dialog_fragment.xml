@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
-    android:layout_height="370dp">
+    android:layout_height="400dp">
 
     <ImageView
         android:id="@+id/song_info_dialog_background_iv"
-        android:layout_width="310dp"
-        android:layout_height="380dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:id="@+id/song_info_dialog_fragment_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center">
 
 
@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:paddingTop="30dp"
             android:layout_marginTop="5dp"
             android:columnCount="2"
             android:orientation="horizontal"
@@ -151,6 +152,7 @@
             android:layout_below="@+id/song_info_dialog_grid_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
+            android:paddingBottom="30dp"
             android:orientation="horizontal">
 
             <ImageView

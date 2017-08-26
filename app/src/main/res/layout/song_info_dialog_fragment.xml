@@ -16,6 +16,8 @@
         android:columnCount="2"
         android:orientation="horizontal"
         android:paddingTop="30dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         android:rowCount="2"
         android:useDefaultMargins="true">
 

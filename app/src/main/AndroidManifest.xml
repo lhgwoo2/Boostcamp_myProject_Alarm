@@ -21,8 +21,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoadingActivity"
             android:screenOrientation="portrait">
@@ -49,9 +49,11 @@
 
         <service android:name=".Alarm.AlarmService" />
 
-        <activity android:name=".EntranceActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".EntranceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity android:name=".HelpActivity"></activity>
     </application>
 
 </manifest>

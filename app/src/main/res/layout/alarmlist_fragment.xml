@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#88000000"
     android:orientation="vertical">
 
 
@@ -10,5 +10,20 @@
         android:id="@+id/alarm_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
+    <TextView
+        android:id="@+id/alarm_list_empty_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:shadowColor="#FF464646"
+        android:shadowDx="2.0"
+        android:shadowDy="2.0"
+        android:shadowRadius="2.0"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="알람을 등록해 보세요!"/>
 
 </LinearLayout>

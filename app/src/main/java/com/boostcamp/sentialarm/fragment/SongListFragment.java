@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.boostcamp.sentialarm.AlarmSong.SongDAO;
 import com.boostcamp.sentialarm.AlarmSong.SongDTO;
@@ -22,6 +23,8 @@ import io.realm.RealmResults;
  */
 
 public class SongListFragment extends Fragment {
+
+    private TextView songListEmptyTextView;
     private RecyclerView songListRecyclerView;
     private LinearLayoutManager mLayoutManager;
     public SongListAdapter songListAdapter;
@@ -42,27 +45,37 @@ public class SongListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-
         View rootView = inflater.inflate(R.layout.songlist_fragment, container, false);
 
+        songListEmptyTextView = (TextView) rootView.findViewById(R.id.song_list_empty_tv);
         songListRecyclerView = (RecyclerView) rootView.findViewById(R.id.song_list_recyclerView);
-        songListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
-        songListRecyclerView.setHasFixedSize(false);
-        mLayoutManager = new LinearLayoutManager(this.getContext());
-        songListRecyclerView.setLayoutManager(mLayoutManager);
-        songListRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        songListAdapter = new SongListAdapter(getContext());
 
         songDAO = new SongDAO();
         songDAO.createSongRealm();
-        RealmResults<SongDTO> songDTOs = songDAO.getSongListFindAll();
+        if(songDAO.isEmptySongList()){
+            songListEmptyTextView.setVisibility(View.VISIBLE);
+            songListRecyclerView.setVisibility(View.GONE);
+        }else {
+            songListEmptyTextView.setVisibility(View.GONE);
+            songListRecyclerView.setVisibility(View.VISIBLE);
 
-        songListAdapter.setSongDAO(songDAO);
-        songListAdapter.setSongDTOs(songDTOs);
-        songListRecyclerView.setAdapter(songListAdapter);
+            songListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
+            songListRecyclerView.setHasFixedSize(false);
+            mLayoutManager = new LinearLayoutManager(this.getContext());
+            songListRecyclerView.setLayoutManager(mLayoutManager);
+            songListRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            songListAdapter = new SongListAdapter(getContext());
+
+
+
+            RealmResults<SongDTO> songDTOs = songDAO.getSongListFindAll();
+
+            songListAdapter.setSongDAO(songDAO);
+            songListAdapter.setSongDTOs(songDTOs);
+            songListRecyclerView.setAdapter(songListAdapter);
+        }
         return rootView;
     }
 

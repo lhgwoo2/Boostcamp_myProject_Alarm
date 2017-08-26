@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/round_transparent_background"
     android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -15,17 +17,35 @@
             android:id="@+id/hour_wheelview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1" />
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="50dp"
+            android:layout_weight="1"
+            android:background="#00000000" />
 
 
         <com.wx.wheelview.widget.WheelView
             android:id="@+id/minute_wheelview"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="50dp"
+            android:layout_weight="1"
+            android:background="#00000000" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/wheel_time_enroll_tv"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:clickable="true"
+        android:background="@drawable/round_white_background"
+        android:text="시간 등록"/>
 
 </LinearLayout>

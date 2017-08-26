@@ -11,4 +11,37 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
+    <string-array name="lisensename">
+        <item>typekit for Android</item>
+        <item>WheelView for Android</item>
+        <item>Glide for Android</item>
+        <item>AnimCheckBox for Android</item>
+        <item>MusicPlayerView for Android</item>
+        <item>Android - platform - firebase</item>
+        <item>KenBurnsView for Android</item>
+        <item>TedPermission for Android</item>
+
+    </string-array>
+
+    <string-array name="lisensecontents">
+        <item>https://github.com/tsengvn/typekit\nCopyright (c) 2015 Hien Ngo\nApache License 2.0</item>
+        <item>https://github.com/venshine/WheelView\nCopyright (C) 2016 venshine.cn@gmail.com\nApache License 2.0</item>
+        <item>https://github.com/bumptech/glide\nCopyright 2014 Google, Inc. All rights reserved.\nApache License 2.0</item>
+        <item>https://github.com/lguipeng/AnimCheckBox\nCopyright 2017 Liaoguipeng\nApache License 2.0</item>
+        <item>https://github.com/iammert/MusicPlayerView\nCopyright 2015 Mert Şimşek.\nApache License 2.0</item>
+        <item>https://firebase.google.com/\nCopyright 2014 Google, Inc. All rights reserved.\nApache License 2.0</item>
+        <item>https://github.com/flavioarfaria/KenBurnsView\nflavioarfaria\nApache License 2.0</item>
+        <item>https://github.com/ParkSangGwon/TedPermission\nCopyright 2017 Ted Park\nApache License 2.0</item>
+    </string-array>
+
+    <string name="appinfo">
+        날씨가 변화함에 따라 알람의 배경화면이 날씨의 상태를 보여줍니다.\n\n
+        또한, 날씨와 어울리는 노래가 알람으로 재생됩니다.\n\n
+        알람의 노래는 Jamendo에서 들으실 수 있습니다.\n\n
+        들었던 노래는 노래 기록에서 다시 들을 수 있습니다."
+    </string>
+
+    <string name="version">1.0.0</string>
+    <string name="madein">made by Mogi</string>
+
 </resources>

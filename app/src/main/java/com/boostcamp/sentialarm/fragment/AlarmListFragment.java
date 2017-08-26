@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.boostcamp.sentialarm.Alarm.AlarmDAO;
 import com.boostcamp.sentialarm.Alarm.AlarmDTO;
@@ -24,6 +25,7 @@ import io.realm.RealmResults;
 
 public class AlarmListFragment extends Fragment {
 
+    private TextView alarmlistEmptyTextView;
     private RecyclerView alarmlistRecyclerView;
     private LinearLayoutManager linearLayoutManager;
 
@@ -32,8 +34,8 @@ public class AlarmListFragment extends Fragment {
 
     private static AlarmListFragment alarmListFragment;
 
-    public static AlarmListFragment getAlarmListFragmentIns(){
-        if(alarmListFragment==null){
+    public static AlarmListFragment getAlarmListFragmentIns() {
+        if (alarmListFragment == null) {
             alarmListFragment = new AlarmListFragment();
         }
 
@@ -41,32 +43,42 @@ public class AlarmListFragment extends Fragment {
     }
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.alarmlist_fragment, container, false);
         alarmlistRecyclerView = (RecyclerView) view.findViewById(R.id.alarm_list_recycler);
-        alarmlistRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        alarmlistEmptyTextView = (TextView) view.findViewById(R.id.alarm_list_empty_tv);
 
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        alarmDAO = ((MainActivity) getActivity()).alarmDAO;
 
-        // 어댑터의 내용이 리사이클러뷰의 크기의 영향을 끼치면 false 영향이 없으면 true, - true 일때 리사이클러뷰 최적화가 가능.
-        alarmlistRecyclerView.setHasFixedSize(false);
-        alarmlistRecyclerView.setLayoutManager(linearLayoutManager);
-        alarmlistRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        if (alarmDAO.isEmptyAlarmList()) {
+            alarmlistRecyclerView.setVisibility(View.GONE);
+            alarmlistEmptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            alarmlistRecyclerView.setVisibility(View.VISIBLE);
+            alarmlistEmptyTextView.setVisibility(View.GONE);
 
-        alarmDAO = ((MainActivity)getActivity()).alarmDAO;
-        RealmResults<AlarmDTO> alarmDTOs = alarmDAO.getAllAlarm();
+            alarmlistRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
+            linearLayoutManager = new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        alarmListAdapter = new AlarmListAdapters(getContext().getApplicationContext());
-        alarmListAdapter.setList(alarmDTOs);
-        alarmListAdapter.setAlarmDAO(alarmDAO);
-        alarmlistRecyclerView.setAdapter(alarmListAdapter);
+            // 어댑터의 내용이 리사이클러뷰의 크기의 영향을 끼치면 false 영향이 없으면 true, - true 일때 리사이클러뷰 최적화가 가능.
+            alarmlistRecyclerView.setHasFixedSize(false);
+            alarmlistRecyclerView.setLayoutManager(linearLayoutManager);
+            alarmlistRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            RealmResults<AlarmDTO> alarmDTOs = alarmDAO.getAllAlarm();
+
+            alarmListAdapter = new AlarmListAdapters(getContext().getApplicationContext());
+            alarmListAdapter.setList(alarmDTOs);
+            alarmListAdapter.setAlarmDAO(alarmDAO);
+            alarmlistRecyclerView.setAdapter(alarmListAdapter);
+
+        }
 
         return view;
     }

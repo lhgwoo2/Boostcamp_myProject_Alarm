@@ -68,6 +68,14 @@ public class AlarmDAO {
         return realm.where(AlarmDTO.class).findAllSorted("id");
     }
 
+    public boolean isEmptyAlarmList(){
+        Number maxAlarm = realm.where(AlarmDTO.class).max("id");
+        if(maxAlarm == null)
+            return true;
+
+        return false;
+    }
+
     // 램 데이터베이스에서 삭제
     public void deleteAlarmData(long alamrID){
 

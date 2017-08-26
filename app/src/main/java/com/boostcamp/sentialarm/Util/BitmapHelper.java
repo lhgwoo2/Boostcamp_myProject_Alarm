@@ -34,6 +34,13 @@ public class BitmapHelper {
         return mBitmap;
     }
 
+    public Bitmap bitmapResize(Bitmap bitmap){
+
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+
+        return resized;
+    }
+
     public String bitmapSaveInApp(Context context, Bitmap bitmap, Object obj) {
 
         String fileName=null;
@@ -42,6 +49,9 @@ public class BitmapHelper {
         }else if(obj instanceof String){
             fileName = (String)obj;
         }
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 8;
 
         FileOutputStream fos = null;
         try {

@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.boostcamp.sentialarm.Alarm.AlarmDAO;
 import com.boostcamp.sentialarm.Util.BaseActivity;
+import com.bumptech.glide.Glide;
 
 public class MainActivity extends BaseActivity {
 
@@ -18,10 +20,17 @@ public class MainActivity extends BaseActivity {
 
     public AlarmDAO alarmDAO=null;
 
+    private ImageView mainBackgroundImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainBackgroundImageView = (ImageView) findViewById(R.id.main_background_iv);
+
+        Glide.with(this).load(R.drawable.bg_main_background_6).into(mainBackgroundImageView);
+
 
         getViewPager();
         getMainFragmentAdapter();
@@ -42,6 +51,8 @@ public class MainActivity extends BaseActivity {
         });
 
 
+
+
         alarmDAO = new AlarmDAO();
         alarmDAO.creatAlarmRealm();
 
@@ -51,6 +62,8 @@ public class MainActivity extends BaseActivity {
         //선택된 페이지로 이동
         getViewPager().setCurrentItem(page);
     }
+
+
     private void setupTabIcons() {
         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_navi_alarm);
         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_navi_alarmlist);

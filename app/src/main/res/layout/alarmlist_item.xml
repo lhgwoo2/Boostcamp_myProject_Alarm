@@ -20,6 +20,11 @@
             android:clickable="false"
             android:focusable="false"
             android:text="23:40"
+            android:shadowColor="#FF464646"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="2.0"
+            android:textColor="@color/white"
             android:textSize="40sp"
             app:font="custom1" />
 

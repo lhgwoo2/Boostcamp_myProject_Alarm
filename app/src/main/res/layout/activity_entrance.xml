@@ -18,6 +18,26 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/entrance_main_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:gravity="center"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:shadowColor="#FF464646"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="2.0"
+            android:text="센치한 아침"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            app:font="custom1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/entrance_main_desciption_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,100 +50,138 @@
             android:shadowDy="2.0"
             android:shadowRadius="2.0"
             android:text="날씨와 어울리는\n당신의 특별한 알람을\n등록하세요"
+            android:textSize="20sp"
             android:textColor="@color/white"
-            android:textSize="30sp"
-            app:font="custom1"
+            android:textStyle="normal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/entrance_main_tv" />
 
-        <LinearLayout
-            android:id="@+id/entrance_alarm_layout"
+
+        <GridLayout
+            android:id="@+id/entrance_grid_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:gravity="center"
-            android:orientation="vertical"
+            android:layout_marginBottom="50dp"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:rowCount="2"
+            android:useDefaultMargins="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintBottom_toTopOf="@+id/entrance_alarmlist_layout">
+            app:layout_constraintRight_toRightOf="parent">
 
-            <ImageView
-                android:id="@+id/entrance_alarm_icon_iv"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_alarm_white" />
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/entrance_alarm_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:shadowColor="#FF464646"
-                android:shadowDx="2.0"
-                android:shadowDy="2.0"
-                android:shadowRadius="2.0"
-                android:text="알람 등록"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:background="@drawable/round_black_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="20dp">
 
-        <LinearLayout
-            android:id="@+id/entrance_alarmlist_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/entrance_songlist_layout">
+                <ImageView
+                    android:id="@+id/entrance_alarm_icon_iv"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_alarm_white" />
 
-            <ImageView
-                android:id="@+id/entrance_alarmlist_icon_iv"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_alarmlist_white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#FF464646"
+                    android:shadowDx="2.0"
+                    android:shadowDy="2.0"
+                    android:shadowRadius="2.0"
+                    android:text="알람 등록"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/entrance_alarmlist_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:shadowColor="#FF464646"
-                android:shadowDx="2.0"
-                android:shadowDy="2.0"
-                android:shadowRadius="2.0"
-                android:text="알람 목록"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:background="@drawable/round_black_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="20dp">
 
-        <LinearLayout
-            android:id="@+id/entrance_songlist_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginBottom="40dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+                <ImageView
+                    android:id="@+id/entrance_alarmlist_icon_iv"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_alarmlist_white" />
 
-            <ImageView
-                android:id="@+id/entrance_songlist_icon_iv"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_songlist_white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#FF464646"
+                    android:shadowDx="2.0"
+                    android:shadowDy="2.0"
+                    android:shadowRadius="2.0"
+                    android:text="알람 목록"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/entrance_songlist_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:shadowColor="#FF464646"
-                android:shadowDx="2.0"
-                android:shadowDy="2.0"
-                android:shadowRadius="2.0"
-                android:text="들은 노래"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:background="@drawable/round_black_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/entrance_songlist_icon_iv"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_songlist_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#FF464646"
+                    android:shadowDx="2.0"
+                    android:shadowDy="2.0"
+                    android:shadowRadius="2.0"
+                    android:text="들은 노래"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/entrance_help_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_black_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/entrance_help_icon_iv"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_question_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#FF464646"
+                    android:shadowDx="2.0"
+                    android:shadowDy="2.0"
+                    android:shadowRadius="2.0"
+                    android:text="부가 정보"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+        </GridLayout>
+
 
     </android.support.constraint.ConstraintLayout>
 

@@ -14,31 +14,33 @@ public class EntranceActivity extends BaseActivity {
     private LinearLayout alarmRegistLayout;
     private LinearLayout alarmListLayout;
     private LinearLayout songListLayout;
+    private LinearLayout helpLayout;
 
     private ImageView entranceBackgroundImageView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrance);
         overridePendingTransition(android.R.anim.fade_in, 0);
 
-
-
         entranceBackgroundImageView = (ImageView) findViewById(R.id.entrance_background_iv);
+
+        helpLayout = (LinearLayout) findViewById(R.id.entrance_help_layout);
         alarmRegistLayout = (LinearLayout) findViewById(R.id.entrance_alarm_layout);
         alarmListLayout = (LinearLayout) findViewById(R.id.entrance_alarmlist_layout);
         songListLayout = (LinearLayout) findViewById(R.id.entrance_songlist_layout);
 
-        Glide.with(this).load(R.drawable.bg_entrance_background_2).into(entranceBackgroundImageView);
-
+        Glide.with(this).load(R.drawable.bg_main_background_6).into(entranceBackgroundImageView);
 
 
         alarmRegistLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("page",0);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("page", 0);
                 startActivity(intent);
             }
         });
@@ -46,8 +48,8 @@ public class EntranceActivity extends BaseActivity {
         alarmListLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("page",1);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("page", 1);
                 startActivity(intent);
             }
         });
@@ -55,10 +57,18 @@ public class EntranceActivity extends BaseActivity {
         songListLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("page",2);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("page", 2);
+                startActivity(intent);
+            }
+        });
+        helpLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
                 startActivity(intent);
             }
         });
     }
+
 }

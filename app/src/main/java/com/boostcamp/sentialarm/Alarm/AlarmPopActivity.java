@@ -373,7 +373,6 @@ public class AlarmPopActivity extends BaseActivity {
             @Override
             protected String doInBackground(Void... voids) {
 
-
                 //음악 이미지 다운로드
                 Bitmap imgBitmap = bitmapHelper.getBitmapOnURL(musicDTO.getResults().get(0).getImage());
                 String imgFileName = bitmapHelper.bitmapSaveInApp(getApplicationContext(), imgBitmap, musicDTO);
@@ -436,7 +435,8 @@ public class AlarmPopActivity extends BaseActivity {
                             protected Void doInBackground(Bitmap... bitmaps) {
 
                                 BitmapHelper bitmapHelper = new BitmapHelper();
-                                bitmapHelper.bitmapSaveInApp(getApplicationContext(), bitmaps[0], backImageFileName);
+                                Bitmap resizeMap = bitmapHelper.bitmapResize(bitmaps[0]);
+                                bitmapHelper.bitmapSaveInApp(getApplicationContext(),resizeMap, backImageFileName);
 
                                 return null;
                             }
@@ -502,7 +502,7 @@ public class AlarmPopActivity extends BaseActivity {
             backFileName += "night_";
         }
         int range = new Random().nextInt(2) + 1;
-        backFileName += range + ".png";
+        backFileName += range + ".jpg";
 
         ref += backFileName;
 

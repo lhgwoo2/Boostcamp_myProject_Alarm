@@ -109,4 +109,9 @@ public class SongDAO {
             });
         }
     }
+
+    public boolean isEmptySongList() {
+        Number maxId  = realm.where(SongDTO.class).max("id");
+        return (maxId == null) ? true : false;
+    }
 }

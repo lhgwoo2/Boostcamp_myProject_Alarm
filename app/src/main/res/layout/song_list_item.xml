@@ -19,6 +19,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/song_list_item_share_url_iv"
         android:layout_toRightOf="@+id/song_list_item_songimage_iv"
         android:layout_alignTop="@+id/song_list_item_songimage_iv"
         android:layout_alignBottom="@+id/song_list_item_songimage_iv"
@@ -26,8 +27,14 @@
 
         <TextView
             android:id="@+id/song_list_item_musictitle_tv"
+            android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:shadowColor="#FF464646"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="2.0"
+            android:textColor="@color/white"
             android:singleLine="true"
             android:text="음악이름"
             android:textStyle="bold" />
@@ -38,6 +45,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/song_list_item_musictitle_tv"
+            android:shadowColor="#FF464646"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="2.0"
+            android:textColor="@color/white"
             android:text="아티스트"
             android:textStyle="normal" />
 
@@ -46,6 +58,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:shadowColor="#FF464646"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="2.0"
+            android:textColor="@color/white"
             android:text="2017년 8월 12일 14시 20분"
             android:textStyle="normal" />
 

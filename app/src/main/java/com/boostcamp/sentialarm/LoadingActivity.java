@@ -38,7 +38,7 @@ public class LoadingActivity extends BaseActivity {
         mainTextView = (TextView) findViewById(R.id.loading_name);
         subTitle = (TextView) findViewById(R.id.loading_subtitle_tv);
         loadingImage = (ImageView) findViewById(R.id.ic_loading_alarm);
-        Glide.with(this).load(R.drawable.bg_entrance_background_2).into(loadingBackgroundImageView);
+        Glide.with(this).load(R.drawable.bg_main_background_blur).into(loadingBackgroundImageView);
 
         fadeAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         fadeAnimation.setStartOffset(1000);

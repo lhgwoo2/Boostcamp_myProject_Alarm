@@ -1,146 +1,143 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/enroll_background_iv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#88000000">
 
 
-        <TextView
-            android:id="@+id/enroll_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="@string/enroll_title"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            app:font="custom1" />
+    <TextView
+        android:id="@+id/enroll_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:shadowColor="#FF464646"
+        android:shadowDx="2.0"
+        android:shadowDy="2.0"
+        android:shadowRadius="2.0"
+        android:text="@string/enroll_title"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:font="custom1" />
 
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
-                android:layout_below="@+id/enroll_title"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:clickable="true"
-                android:shadowColor="#FFFFFFFF"
-                android:shadowDx="2.0"
-                android:shadowDy="2.0"
-                android:shadowRadius="2.0"
-                android:text="16:30"
-                android:textColor="@color/white"
-                android:background="@drawable/circle"
-                android:textSize="45sp"
-                app:font="custom1" />
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/enroll_title"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/circle"
+        android:clickable="true"
+        android:gravity="center"
+        android:shadowColor="#FF464646"
+        android:shadowDx="2.0"
+        android:shadowDy="2.0"
+        android:shadowRadius="2.0"
+        android:textColor="@color/white"
+        android:textSize="45sp"
+        app:font="custom1" />
 
 
+    <LinearLayout
+        android:id="@+id/week_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/enroll_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp">
 
+        <CheckBox
+            android:id="@+id/check_mon_enroll"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_monday_selector"
+            android:button="@null"
+            android:checked="true" />
 
-        <LinearLayout
-            android:id="@+id/week_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_time"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="50dp">
+        <CheckBox
+            android:id="@+id/check_tues_enroll"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_tuesday_selector"
+            android:button="@null"
+            android:checked="true" />
 
-            <CheckBox
-                android:id="@+id/check_mon_enroll"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:background="@drawable/alarmlist_monday_selector"
-                android:button="@null"
-                android:checked="true" />
+        <CheckBox
+            android:id="@+id/check_wednes_enroll"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_wednesday_selector"
+            android:button="@null"
+            android:checked="true" />
 
-            <CheckBox
-                android:id="@+id/check_tues_enroll"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:background="@drawable/alarmlist_tuesday_selector"
-                android:button="@null"
-                android:checked="true" />
+        <CheckBox
+            android:id="@+id/check_thurs_enroll"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_thursday_selector"
+            android:button="@null"
+            android:checked="true" />
 
-            <CheckBox
-                android:id="@+id/check_wednes_enroll"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:background="@drawable/alarmlist_wednesday_selector"
-                android:button="@null"
-                android:checked="true" />
+        <CheckBox
+            android:id="@+id/check_fri_enroll"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_friday_selector"
+            android:button="@null"
+            android:checked="true" />
 
-            <CheckBox
-                android:id="@+id/check_thurs_enroll"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:background="@drawable/alarmlist_thursday_selector"
-                android:button="@null"
-                android:checked="true" />
+        <CheckBox
+            android:id="@+id/check_sat_enroll"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_satday_selector"
+            android:button="@null"
+            android:checked="true" />
 
-            <CheckBox
-                android:id="@+id/check_fri_enroll"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:background="@drawable/alarmlist_friday_selector"
-                android:button="@null"
-                android:checked="true" />
+        <CheckBox
+            android:id="@+id/check_sun_enroll"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/alarmlist_sunday_selector"
+            android:button="@null"
+            android:checked="true" />
 
-            <CheckBox
-                android:id="@+id/check_sat_enroll"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:background="@drawable/alarmlist_satday_selector"
-                android:button="@null"
-                android:checked="true" />
+    </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/check_sun_enroll"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:background="@drawable/alarmlist_sunday_selector"
-                android:button="@null"
-                android:checked="true" />
+    <TextView
+        android:id="@+id/enroll_button"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/round_green_background"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="알람 등록"
+        android:textColor="@color/white"
+        android:textStyle="normal" />
 
-        </LinearLayout>
+</RelativeLayout>
 
-        <TextView
-            android:id="@+id/enroll_button"
-            android:layout_width="300dp"
-            android:layout_height="70dp"
-            android:layout_below="@+id/week_layout"
-            android:layout_centerHorizontal="true"
-            android:background="#882E8438"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="Enroll"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:textStyle="normal"
-            />
-
-
-    </RelativeLayout>
-</FrameLayout>

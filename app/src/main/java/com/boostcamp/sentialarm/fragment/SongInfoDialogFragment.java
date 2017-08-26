@@ -1,14 +1,16 @@
 package com.boostcamp.sentialarm.fragment;
 
-import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,12 +63,14 @@ public class SongInfoDialogFragment extends DialogFragment {
         this.songDTO = songDTO;
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        super.onCreateView(inflater, container, savedInstanceState);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         View dialogView = inflater.inflate(R.layout.song_info_dialog_fragment, null);
 
         songArtistNameTextView = dialogView.findViewById(R.id.song_info_dialog_song_artist_name_tv);
@@ -80,7 +84,7 @@ public class SongInfoDialogFragment extends DialogFragment {
         songWeatherBackImageView = dialogView.findViewById(R.id.song_info_dialog_weather_background_iv);
         songCoverImageView = dialogView.findViewById(R.id.song_info_dialog_song_cover_iv);
 
-        songBackgroundImageView = dialogView.findViewById(R.id.song_info_dialog_background_iv);
+        // songBackgroundImageView = dialogView.findViewById(R.id.song_info_dialog_background_iv);
 
 
         songPlayButtonImageView = dialogView.findViewById(R.id.song_info_dialog_play_button_iv);
@@ -125,13 +129,12 @@ public class SongInfoDialogFragment extends DialogFragment {
             Glide.with(dialogView).load(R.drawable.ic_default_record).into(songCoverImageView);
             Glide.with(dialogView).load(R.drawable.bg_default_localbackground).into(songWeatherBackImageView);
         }
-        Glide.with(dialogView).load(R.drawable.bg_song_dialog_background).into(songBackgroundImageView);
+        //Glide.with(dialogView).load(R.drawable.bg_song_dialog_background2).into(songBackgroundImageView);
 
-        builder.setView(dialogView);
+        return dialogView;
 
-
-        return builder.create();
     }
+
     private String[] divideDateAndTime(SongDTO songDTO){
         Date current = songDTO.getPlayDate();
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy. MM. dd E");

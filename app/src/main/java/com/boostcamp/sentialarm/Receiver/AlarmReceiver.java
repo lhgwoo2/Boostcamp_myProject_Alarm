@@ -1,11 +1,16 @@
-package com.boostcamp.sentialarm.Alarm;
+package com.boostcamp.sentialarm.Receiver;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.boostcamp.sentialarm.Activity.AlarmPopActivity;
+import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
+import com.boostcamp.sentialarm.DAO.AlarmDAO;
+import com.boostcamp.sentialarm.DTO.AlarmDTO;
+import com.boostcamp.sentialarm.Util.AlarmManagerUtil;
 
 /**
  * Created by 현기 on 2017-08-03.
@@ -32,7 +37,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 // 이 알람이 현재 요일에 작동하는지
                 if (AlarmManagerUtil.checkWeekly(alarmDTO)) {
-                    Toast.makeText(context, "알림", Toast.LENGTH_LONG).show();
                     AlarmScheduler.registerAlarm(context, alarmDTO.getId(), alarmDTO.getAlarmHour(), alarmDTO.getAlarmMinute());
                     Intent nextIntent = new Intent(context, AlarmPopActivity.class);
 

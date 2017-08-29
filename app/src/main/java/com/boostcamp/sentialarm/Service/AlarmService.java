@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.Alarm;
+package com.boostcamp.sentialarm.Service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -30,7 +30,7 @@ public class AlarmService extends Service {
     private final IBinder mBinder = new AlarmBinder();
 
     public class AlarmBinder extends Binder {
-        AlarmService getService() {
+        public AlarmService getService() {
             // Return this instance of LocalService so clients can call public methods
             return AlarmService.this;
         }
@@ -159,7 +159,7 @@ public class AlarmService extends Service {
                 musicPlayer.musicProcess();
             }
 
-        }.execute(weather);
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, weather);
     }
 
 

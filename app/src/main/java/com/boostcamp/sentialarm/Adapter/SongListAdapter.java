@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.boostcamp.sentialarm.AlarmSong.SongDAO;
-import com.boostcamp.sentialarm.AlarmSong.SongDTO;
+import com.boostcamp.sentialarm.DAO.SongDAO;
+import com.boostcamp.sentialarm.DTO.SongDTO;
+import com.boostcamp.sentialarm.Fragment.SongInfoDialogFragment;
 import com.boostcamp.sentialarm.R;
 import com.boostcamp.sentialarm.Util.BitmapHelper;
 import com.bumptech.glide.Glide;

@@ -1,5 +1,6 @@
-package com.boostcamp.sentialarm.Alarm;
+package com.boostcamp.sentialarm.DAO;
 
+import com.boostcamp.sentialarm.DTO.AlarmDTO;
 import com.boostcamp.sentialarm.Util.ApplicationClass;
 
 import io.realm.Realm;

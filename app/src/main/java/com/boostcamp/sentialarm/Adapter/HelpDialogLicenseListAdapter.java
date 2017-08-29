@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

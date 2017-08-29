@@ -36,7 +36,7 @@ public class BitmapHelper {
 
     public Bitmap bitmapResize(Bitmap bitmap){
 
-        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
 
         return resized;
     }

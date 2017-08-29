@@ -6,13 +6,14 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import com.boostcamp.sentialarm.API.Jamendo.DTO.MusicDTO;
-import com.boostcamp.sentialarm.Alarm.AlarmPopActivity;
+import com.boostcamp.sentialarm.Activity.AlarmPopActivity;
 import com.boostcamp.sentialarm.Util.BaseAsyncTask.AsyncCallback;
 import com.boostcamp.sentialarm.Util.BaseAsyncTask.AsyncExecutor;
 import com.google.gson.Gson;
@@ -172,7 +173,7 @@ public class MusicPlayer {
         new AsyncExecutor<String>()
                 .setCallable(callable)
                 .setCallback(callback)
-                .execute();
+                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 

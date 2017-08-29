@@ -1,8 +1,9 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.boostcamp.sentialarm.AlarmSong.SongDAO;
-import com.boostcamp.sentialarm.AlarmSong.SongDTO;
+import com.boostcamp.sentialarm.Adapter.SongListAdapter;
+import com.boostcamp.sentialarm.DAO.SongDAO;
+import com.boostcamp.sentialarm.DTO.SongDTO;
 import com.boostcamp.sentialarm.R;
 
 import io.realm.RealmResults;
@@ -33,9 +35,9 @@ public class SongListFragment extends Fragment {
 
     private static SongListFragment songListFragment;
 
-    public static SongListFragment getSongListFragmentIns(){
-        if(songListFragment==null){
-            songListFragment=new SongListFragment();
+    public static SongListFragment getSongListFragmentIns() {
+        if (songListFragment == null) {
+            songListFragment = new SongListFragment();
         }
         return songListFragment;
     }
@@ -52,10 +54,10 @@ public class SongListFragment extends Fragment {
 
         songDAO = new SongDAO();
         songDAO.createSongRealm();
-        if(songDAO.isEmptySongList()){
+        if (songDAO.isEmptySongList()) {
             songListEmptyTextView.setVisibility(View.VISIBLE);
             songListRecyclerView.setVisibility(View.GONE);
-        }else {
+        } else {
             songListEmptyTextView.setVisibility(View.GONE);
             songListRecyclerView.setVisibility(View.VISIBLE);
 
@@ -69,7 +71,6 @@ public class SongListFragment extends Fragment {
             songListAdapter = new SongListAdapter(getContext());
 
 
-
             RealmResults<SongDTO> songDTOs = songDAO.getSongListFindAll();
 
             songListAdapter.setSongDAO(songDAO);
@@ -79,8 +80,10 @@ public class SongListFragment extends Fragment {
         return rootView;
     }
 
-
-
+    public void refresh() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }
 
     @Override
     public void onDestroyView() {

@@ -14,7 +14,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.boostcamp.sentialarm.API.Weather.WeatherHelper;
-import com.boostcamp.sentialarm.Alarm.AlarmPopActivity;
+import com.boostcamp.sentialarm.Activity.AlarmPopActivity;
 
 import java.io.IOException;
 import java.util.List;

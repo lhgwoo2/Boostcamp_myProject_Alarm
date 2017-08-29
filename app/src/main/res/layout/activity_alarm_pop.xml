@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.boostcamp.sentialarm.Alarm.AlarmPopActivity">
+    tools:context="com.boostcamp.sentialarm.Activity.AlarmPopActivity">
 
     <com.flaviofaria.kenburnsview.KenBurnsView
         android:id="@+id/pop_backgound_kenburns_iv"

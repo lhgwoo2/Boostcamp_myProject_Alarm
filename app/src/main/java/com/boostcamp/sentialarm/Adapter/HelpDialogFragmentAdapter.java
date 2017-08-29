@@ -1,8 +1,11 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.boostcamp.sentialarm.Fragment.HelpDialogInfoFragment;
+import com.boostcamp.sentialarm.Fragment.HelpDialogLicenseFragment;
 
 /**
  * Created by 현기 on 2017-08-24.

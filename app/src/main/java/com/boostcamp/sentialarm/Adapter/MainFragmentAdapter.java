@@ -1,13 +1,13 @@
-package com.boostcamp.sentialarm;
+package com.boostcamp.sentialarm.Adapter;
 
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.boostcamp.sentialarm.fragment.AlarmListFragment;
-import com.boostcamp.sentialarm.fragment.EnrollFragment;
-import com.boostcamp.sentialarm.fragment.SongListFragment;
+import com.boostcamp.sentialarm.Fragment.AlarmListFragment;
+import com.boostcamp.sentialarm.Fragment.EnrollFragment;
+import com.boostcamp.sentialarm.Fragment.SongListFragment;
 
 /**
  * Created by 현기 on 2017-07-26.

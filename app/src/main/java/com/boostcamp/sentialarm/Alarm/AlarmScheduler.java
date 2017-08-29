@@ -5,6 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.boostcamp.sentialarm.Receiver.AlarmReceiver;
+import com.boostcamp.sentialarm.Util.AlarmManagerUtil;
+
 /**
  * Created by 현기 on 2017-08-08.
  */

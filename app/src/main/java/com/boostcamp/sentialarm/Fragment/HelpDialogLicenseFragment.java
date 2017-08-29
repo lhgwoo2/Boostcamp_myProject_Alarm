@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.boostcamp.sentialarm.Adapter.HelpDialogLicenseListAdapter;
 import com.boostcamp.sentialarm.R;
 
 import java.util.ArrayList;

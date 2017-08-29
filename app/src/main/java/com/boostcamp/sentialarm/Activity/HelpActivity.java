@@ -1,12 +1,13 @@
-package com.boostcamp.sentialarm;
+package com.boostcamp.sentialarm.Activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.widget.ImageView;
 
+import com.boostcamp.sentialarm.R;
 import com.boostcamp.sentialarm.Util.BaseActivity;
-import com.boostcamp.sentialarm.fragment.HelpDialogFragmentAdapter;
+import com.boostcamp.sentialarm.Adapter.HelpDialogFragmentAdapter;
 import com.bumptech.glide.Glide;
 
 public class HelpActivity extends BaseActivity {

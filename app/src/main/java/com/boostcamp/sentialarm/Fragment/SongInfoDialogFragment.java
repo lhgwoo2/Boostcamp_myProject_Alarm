@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +14,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.boostcamp.sentialarm.AlarmSong.SongDTO;
+import com.boostcamp.sentialarm.DTO.SongDTO;
 import com.boostcamp.sentialarm.R;
 import com.boostcamp.sentialarm.Util.BitmapHelper;
 import com.bumptech.glide.Glide;

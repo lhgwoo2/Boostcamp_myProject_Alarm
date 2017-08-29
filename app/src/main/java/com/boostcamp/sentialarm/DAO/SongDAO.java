@@ -1,9 +1,11 @@
-package com.boostcamp.sentialarm.AlarmSong;
+package com.boostcamp.sentialarm.DAO;
 
 import android.util.Log;
 
 import com.boostcamp.sentialarm.API.Jamendo.DTO.MusicDTO;
 import com.boostcamp.sentialarm.API.MediaPlayer.MusicLocalDTO;
+import com.boostcamp.sentialarm.DTO.SongDTO;
+import com.boostcamp.sentialarm.DTO.WeatherInfoDTO;
 import com.boostcamp.sentialarm.Util.ApplicationClass;
 
 import java.util.Date;

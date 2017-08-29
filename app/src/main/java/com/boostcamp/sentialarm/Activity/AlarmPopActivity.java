@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.Alarm;
+package com.boostcamp.sentialarm.Activity;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.LocationManager;
 import android.media.AudioManager;
@@ -29,8 +31,10 @@ import android.widget.Toast;
 import com.boostcamp.sentialarm.API.Jamendo.DTO.MusicDTO;
 import com.boostcamp.sentialarm.API.MediaPlayer.MusicLocalDTO;
 import com.boostcamp.sentialarm.API.Weather.WeatherRootDTO;
-import com.boostcamp.sentialarm.AlarmSong.SongDAO;
-import com.boostcamp.sentialarm.AlarmSong.WeatherInfoDTO;
+import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
+import com.boostcamp.sentialarm.Service.AlarmService;
+import com.boostcamp.sentialarm.DAO.SongDAO;
+import com.boostcamp.sentialarm.DTO.WeatherInfoDTO;
 import com.boostcamp.sentialarm.R;
 import com.boostcamp.sentialarm.Util.BaseActivity;
 import com.boostcamp.sentialarm.Util.BitmapHelper;
@@ -114,9 +118,18 @@ public class AlarmPopActivity extends BaseActivity {
                 if (networkConnection) {
                     musicFlag = true;
                     musicDTO = (MusicDTO) msg.obj;
-                    mpv.setCoverURL(musicDTO.getResults().get(0).getImage());
+                    //mpv.setCoverURL(musicDTO.getResults().get(0).getImage());
                     mpv.setMax((int) musicDTO.getResults().get(0).getDuration());
                     mpv.start();
+
+                    Glide.with(getApplication()).asBitmap().load(musicDTO.getResults().get(0).getImage()).into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            Drawable drawable = new BitmapDrawable(null,resource);
+                            mpv.setCoverDrawable(drawable);
+                        }
+                    });
+
 
                     textViewMusicTitle.setText(musicDTO.getResults().get(0).getName());
                     textViewMusicianName.setText(musicDTO.getResults().get(0).getArtist_name());
@@ -180,9 +193,9 @@ public class AlarmPopActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         turnOnScreen();
-
         setContentView(R.layout.activity_alarm_pop);
 
+        Toast.makeText(this, "알림", Toast.LENGTH_LONG).show();
         Intent receiverIntent = getIntent();
         alarmId = receiverIntent.getIntExtra("alarmID", 0);
 
@@ -389,7 +402,7 @@ public class AlarmPopActivity extends BaseActivity {
                 // 날씨, 음악, 위치 데이터가 모두 도착했을 때 DB저장
                 arriveDataSetRealm();
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void setWeatherViewAndDTO(WeatherRootDTO weatherRootDTO) {
@@ -440,7 +453,7 @@ public class AlarmPopActivity extends BaseActivity {
 
                                 return null;
                             }
-                        }.execute(resource);
+                        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, resource);
                     }
                 });
 

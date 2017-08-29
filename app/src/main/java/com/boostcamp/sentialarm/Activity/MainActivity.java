@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm;
+package com.boostcamp.sentialarm.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.boostcamp.sentialarm.Alarm.AlarmDAO;
+import com.boostcamp.sentialarm.Adapter.MainFragmentAdapter;
+import com.boostcamp.sentialarm.R;
 import com.boostcamp.sentialarm.Util.BaseActivity;
 import com.bumptech.glide.Glide;
 
@@ -18,7 +19,6 @@ public class MainActivity extends BaseActivity {
     public ViewPager viewPager;
     private TabLayout mTabLayout;
 
-    public AlarmDAO alarmDAO=null;
 
     private ImageView mainBackgroundImageView;
 
@@ -51,11 +51,6 @@ public class MainActivity extends BaseActivity {
         });
 
 
-
-
-        alarmDAO = new AlarmDAO();
-        alarmDAO.creatAlarmRealm();
-
         Intent intent = getIntent();
         int page = intent.getIntExtra("page",0);
 
@@ -87,8 +82,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        alarmDAO.closeAlarmRealm();
-
         super.onDestroy();
     }
 }

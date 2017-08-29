@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,10 +14,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.boostcamp.sentialarm.Alarm.AlarmDAO;
-import com.boostcamp.sentialarm.Alarm.AlarmDTO;
+import com.boostcamp.sentialarm.DAO.AlarmDAO;
+import com.boostcamp.sentialarm.DTO.AlarmDTO;
 import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
-import com.boostcamp.sentialarm.MainActivity;
+import com.boostcamp.sentialarm.Activity.MainActivity;
+import com.boostcamp.sentialarm.Adapter.MainFragmentAdapter;
 import com.boostcamp.sentialarm.R;
 
 import java.text.SimpleDateFormat;
@@ -70,7 +71,7 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
 
         vibrator = (Vibrator) view.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
-        alarmDAO = ((MainActivity) getActivity()).alarmDAO;
+        alarmDAO = new AlarmDAO();
 
         initView(view);
         initTime();
@@ -119,17 +120,21 @@ public class EnrollFragment extends Fragment implements WheelViewDialogFragment.
                         String time = textViewtime.getText().toString();
                         String[] times = time.split(":");
                         // 알람 저장
+                        alarmDAO.creatAlarmRealm();
                         AlarmDTO alarmDTO = alarmDAO.setEnrollAlarm(Integer.valueOf(times[0].trim()), Integer.valueOf(times[1].trim()), true,
                                 checkMonEnroll.isChecked(), checkTuesEnroll.isChecked(), checkWednesEnroll.isChecked(),
                                 checkThursEnroll.isChecked(), checkFriEnroll.isChecked(), checkSatEnroll.isChecked(), checkSunEnroll.isChecked());
+                        alarmDAO.closeAlarmRealm();
 
                         // 리스트 데이터 변경
-                        ((AlarmListFragment) getFragmentManager().getFragments().get(2)).alarmListAdapter.notifyDataSetChanged();
+                       // ((AlarmListFragment) getFragmentManager().getFragments().get(2)).alarmListAdapter.notifyDataSetChanged();
+                        AlarmListFragment f = (AlarmListFragment)((MainFragmentAdapter) ((MainActivity) getActivity()).getViewPager().getAdapter()).getItem(1);
+                        //f.alarmListAdapter.notifyDataSetChanged();
+                        f.refresh();
                         Log.i("알람등록", "디버깅, 등록화면 등록된 알람 id:" + alarmDTO.getId());
 
                         // 알람 등록
                         AlarmScheduler.registerAlarm(getContext().getApplicationContext(), alarmDTO.getId(), alarmDTO.getAlarmHour(), alarmDTO.getAlarmMinute());
-
                         ((MainActivity) getActivity()).getViewPager().setCurrentItem(1);
                     }
 

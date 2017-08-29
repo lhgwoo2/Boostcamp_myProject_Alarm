@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.boostcamp.sentialarm.Alarm.AlarmDAO;
-import com.boostcamp.sentialarm.Alarm.AlarmDTO;
+import com.boostcamp.sentialarm.DAO.AlarmDAO;
+import com.boostcamp.sentialarm.DTO.AlarmDTO;
 import com.boostcamp.sentialarm.Alarm.AlarmScheduler;
 import com.boostcamp.sentialarm.R;
 import com.github.lguipeng.library.animcheckbox.AnimCheckBox;
@@ -138,7 +138,7 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                     // 알람 등록
                     AlarmScheduler.registerAlarm(context, alarmDTO.getId(), alarmDTO.getAlarmHour(), alarmDTO.getAlarmMinute());
                 }
-                notifyDataSetChanged();
+              //  notifyDataSetChanged();
             }
 
         };
@@ -153,7 +153,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                 int checkId = compoundButton.getId();
 
                 checkBoxValueChange(checkId, alarmDTO);
-                notifyDataSetChanged();
             }
         };
     }
@@ -294,7 +293,6 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
             sunCheck = (CheckBox) itemView.findViewById(R.id.alarm_list_view_sunday);
 
             onOffCheck = (AnimCheckBox) itemView.findViewById(R.id.alarm_on_off_checkbox);
-
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.AlarmSong;
+package com.boostcamp.sentialarm.DTO;
 
 import java.util.Date;
 

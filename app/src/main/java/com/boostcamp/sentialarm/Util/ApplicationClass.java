@@ -2,6 +2,7 @@ package com.boostcamp.sentialarm.Util;
 
 import android.app.Application;
 
+import com.bumptech.glide.Glide;
 import com.tsengvn.typekit.Typekit;
 
 import io.realm.Realm;
@@ -46,6 +47,18 @@ public class ApplicationClass extends Application {
 
    /*   Realm.deleteRealm(songListConfig);
         Realm.deleteRealm(alarmListConfig);*/
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Glide.get(this).clearMemory();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Glide.get(this).trimMemory(level);
     }
 
 

@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.boostcamp.sentialarm.Alarm.AlarmPopActivity;
+import com.boostcamp.sentialarm.Activity.AlarmPopActivity;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;

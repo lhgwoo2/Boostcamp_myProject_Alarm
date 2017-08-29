@@ -1,9 +1,11 @@
-package com.boostcamp.sentialarm.Alarm;
+package com.boostcamp.sentialarm.Util;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
+
+import com.boostcamp.sentialarm.DTO.AlarmDTO;
 
 import java.util.Calendar;
 

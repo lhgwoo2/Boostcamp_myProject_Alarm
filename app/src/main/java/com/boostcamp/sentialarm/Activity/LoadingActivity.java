@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm;
+package com.boostcamp.sentialarm.Activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boostcamp.sentialarm.R;
 import com.boostcamp.sentialarm.Util.BaseActivity;
 import com.bumptech.glide.Glide;
 import com.gun0912.tedpermission.PermissionListener;
@@ -93,5 +94,8 @@ public class LoadingActivity extends BaseActivity {
         }, SPLASH_TIME);
     }
 
+    @Override
+    public void onBackPressed() {
 
+    }
 }

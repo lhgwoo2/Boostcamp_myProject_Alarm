@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

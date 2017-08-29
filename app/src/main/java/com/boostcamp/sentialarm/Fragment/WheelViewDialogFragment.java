@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.fragment;
+package com.boostcamp.sentialarm.Fragment;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
-import com.boostcamp.sentialarm.MainActivity;
-import com.boostcamp.sentialarm.MainFragmentAdapter;
+import com.boostcamp.sentialarm.Activity.MainActivity;
+import com.boostcamp.sentialarm.Adapter.MainFragmentAdapter;
 import com.boostcamp.sentialarm.R;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
 import com.wx.wheelview.widget.WheelView;
@@ -88,34 +88,6 @@ public class WheelViewDialogFragment extends DialogFragment {
 
         return dialogView;
     }
-
-  /*  @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.timepick_dialog, null);
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        builder.setView(dialogView)
-                // Add action buttons
-                .setPositiveButton(R.string.confrim_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        // sign in the user ...
-                       String sHour = hourWheelView.getSelectionItem().toString();
-                        String sMinute = minuteWheelView.getSelectionItem().toString();
-                        dialog.dismiss();
-                        mListener.onDialogPositiveClick(sHour, sMinute);
-                    }
-                });
-
-        initWheel(dialogView);
-
-        return builder.create();
-    }
-*/
 
 
     private void initWheel(View view) {

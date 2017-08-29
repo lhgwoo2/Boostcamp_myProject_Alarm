@@ -1,4 +1,4 @@
-package com.boostcamp.sentialarm.Alarm;
+package com.boostcamp.sentialarm.DTO;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

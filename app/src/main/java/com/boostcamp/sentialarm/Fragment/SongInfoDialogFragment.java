@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +109,8 @@ public class SongInfoDialogFragment extends DialogFragment {
 
         songArtistNameTextView.setText(songDTO.getArtistName());
         songTitleTextView.setText(songDTO.getMusicTitle());
-
+        Log.i("태그", "왜 안찍힘?");
+        Log.i("플레이시간", songDTO.getPlayDate().toString());
         String[] dateAndTime = divideDateAndTime(songDTO);
         songDateTextView.setText(dateAndTime[0]);
         songPlayTimeTextView.setText(dateAndTime[1]);

@@ -237,8 +237,7 @@ public class AlarmListAdapters extends RecyclerView.Adapter<AlarmListAdapters.Vi
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         alarmDAO.deleteAlarmData(id);
-                        notifyDataSetChanged();
-
+                        notifyItemRemoved(position);
                         Toast.makeText(context.getApplicationContext(), "알람을 지웠습니다^^", Toast.LENGTH_LONG).show();
                     }
                 });

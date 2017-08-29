@@ -181,7 +181,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
                         public void onClick(DialogInterface dialogInterface, int i) {
 
                             songDAO.deleteSongData(songDTO.getId());
-                            notifyDataSetChanged();
+                            notifyItemRemoved(getLayoutPosition());
                             Toast.makeText(view.getContext().getApplicationContext(), "노래 기록을 지웠습니다^^", Toast.LENGTH_LONG).show();
                         }
                     });
